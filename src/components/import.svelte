@@ -6,6 +6,7 @@
     db.loadDatabase()
     console.log(db)
 
+    let input;
     let files;
 
     function importFiles() {
@@ -19,7 +20,7 @@
                 }
 
                 let lines = data.split('\n')
-                let parsedRMCData = []
+                let parsedData = []
                 let date = 0
                 lines.forEach(line => {
                     let parsed
@@ -28,40 +29,49 @@
                         //console.log(parsed)
                     } catch(e) {console.log(e)}
                     
-                    if(typeof(parsed) !== "undefined" && parsed.sentence == "RMC") {
-                        if(date == 0) {
-                            let parseddate = parsed.date
-                            let timestamp = parsed.timestamp
+                    if(typeof(parsed) !== "undefined" && parsed.sentence == "RMC" && date == 0) {
+                        let parseddate = parsed.date
+                        let timestamp = parsed.timestamp
 
-                            let d = parseddate.substring(0,2)
-                            let m = parseddate.substring(2,4)
-                            let y = parseddate.substring(4,6)
-                            let h = timestamp.substring(0,2)
-                            let min = timestamp.substring(2,4)
-                            let utc_str = `20${y}-${m}-${d}T${h}:${min}Z`
-                            let dt = new Date(utc_str)
-                            date = dt.toString()
-                        }
-                        parsedRMCData.push(parsed)
+                        let d = parseddate.substring(0,2)
+                        let m = parseddate.substring(2,4)
+                        let y = parseddate.substring(4,6)
+                        let h = timestamp.substring(0,2)
+                        let min = timestamp.substring(2,4)
+                        let sec = timestamp.substring(4,6)
+                        let utc_str = `20${y}-${m}-${d}T${h}:${min}:${sec}Z`
+                        let dt = new Date(utc_str)
+                        date = dt.toString()
+                    }
+
+                    if(typeof(parsed) !== "undefined" && parsed.sentence == "GGA") {
+                        parsedData.push(parsed)
+                    }
+
+                    if(typeof(parsed) !== "undefined" && parsed.sentence == "RMC") {
+                        console.log(parsed.speedKnots)
+                        parsedData[parsedData.length-1].speedKnots = parsed.speedKnots
                     }
                 })
 
-                // Change how to handle the file content
-                //console.log("The file content is : " + data);
+                console.log(parsedData)
+
                 var doc = {
                     date: date,
-                    data: parsedRMCData
+                    data: parsedData
                 }
                 db.insert(doc, function(err, newDoc) {
                     if(err) alert(err)
                 })
+                alert("Import Success")
+                input.value = ''
             });
         }
     }
 </script>
 
 <import>
-    <input id="fileselector" type="file" bind:files>
+    <input id="fileselector" type="file" bind:this={input} bind:files>
     <div class="btn" on:click={importFiles}>
         <p>Import!</p>
     </div>

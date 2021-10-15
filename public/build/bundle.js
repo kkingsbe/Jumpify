@@ -70,6 +70,19 @@ var app = (function () {
     function children(element) {
         return Array.from(element.childNodes);
     }
+    function select_option(select, value) {
+        for (let i = 0; i < select.options.length; i += 1) {
+            const option = select.options[i];
+            if (option.__value === value) {
+                option.selected = true;
+                return;
+            }
+        }
+    }
+    function select_value(select) {
+        const selected_option = select.querySelector(':checked') || select.options[0];
+        return selected_option && selected_option.__value;
+    }
     function custom_event(type, detail) {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, false, false, detail);
@@ -1564,14 +1577,14 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[3] = list[i];
+    	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
-    // (18:8) {#each jumpDates as date}
+    // (24:8) {#each jumpDates as date}
     function create_each_block(ctx) {
     	let option;
-    	let t_value = /*date*/ ctx[3].date + "";
+    	let t_value = /*date*/ ctx[5].date + "";
     	let t;
     	let option_value_value;
 
@@ -1579,18 +1592,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*date*/ ctx[3].date;
+    			option.__value = option_value_value = /*date*/ ctx[5].date;
     			option.value = option.__value;
-    			add_location(option, file$7, 18, 8, 407);
+    			add_location(option, file$7, 24, 8, 607);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*jumpDates*/ 1 && t_value !== (t_value = /*date*/ ctx[3].date + "")) set_data_dev(t, t_value);
+    			if (dirty & /*jumpDates*/ 2 && t_value !== (t_value = /*date*/ ctx[5].date + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*jumpDates*/ 1 && option_value_value !== (option_value_value = /*date*/ ctx[3].date)) {
+    			if (dirty & /*jumpDates*/ 2 && option_value_value !== (option_value_value = /*date*/ ctx[5].date)) {
     				prop_dev(option, "__value", option_value_value);
     			}
 
@@ -1605,7 +1618,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(18:8) {#each jumpDates as date}",
+    		source: "(24:8) {#each jumpDates as date}",
     		ctx
     	});
 
@@ -1615,7 +1628,9 @@ var app = (function () {
     function create_fragment$7(ctx) {
     	let selector;
     	let select;
-    	let each_value = /*jumpDates*/ ctx[0];
+    	let option;
+    	let dispose;
+    	let each_value = /*jumpDates*/ ctx[1];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -1627,13 +1642,19 @@ var app = (function () {
     		c: function create() {
     			selector = element("selector");
     			select = element("select");
+    			option = element("option");
+    			option.textContent = "Select Jump:";
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			add_location(select, file$7, 16, 4, 354);
-    			add_location(selector, file$7, 15, 0, 338);
+    			option.__value = "Select Jump:";
+    			option.value = option.__value;
+    			add_location(option, file$7, 22, 8, 533);
+    			if (/*selectedJump*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[4].call(select));
+    			add_location(select, file$7, 21, 4, 489);
+    			add_location(selector, file$7, 20, 0, 473);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1641,14 +1662,18 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, selector, anchor);
     			append_dev(selector, select);
+    			append_dev(select, option);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(select, null);
     			}
+
+    			select_option(select, /*selectedJump*/ ctx[0]);
+    			dispose = listen_dev(select, "change", /*select_change_handler*/ ctx[4]);
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*jumpDates*/ 1) {
-    				each_value = /*jumpDates*/ ctx[0];
+    			if (dirty & /*jumpDates*/ 2) {
+    				each_value = /*jumpDates*/ ctx[1];
     				validate_each_argument(each_value);
     				let i;
 
@@ -1670,12 +1695,17 @@ var app = (function () {
 
     				each_blocks.length = each_value.length;
     			}
+
+    			if (dirty & /*selectedJump*/ 1) {
+    				select_option(select, /*selectedJump*/ ctx[0]);
+    			}
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(selector);
     			destroy_each(each_blocks, detaching);
+    			dispose();
     		}
     	};
 
@@ -1694,39 +1724,61 @@ var app = (function () {
     	var Datastore = require("nedb");
     	var db = new Datastore("C:/Program Files/Jumpify/jumps.db");
     	var jumpDates = [];
+    	let { selectedJump } = $$props;
 
     	db.loadDatabase(function (err) {
+    		if (err) alert(err);
+
     		db.find({}, { date: 1 }, function (err, docs) {
-    			$$invalidate(0, jumpDates = docs);
-    			console.log(jumpDates);
+    			if (err) alert(err); else {
+    				$$invalidate(1, jumpDates = docs);
+    			} //console.log(jumpDates)
     		});
     	});
+
+    	const writable_props = ["selectedJump"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Jump_selector> was created with unknown prop '${key}'`);
+    	});
+
+    	function select_change_handler() {
+    		selectedJump = select_value(this);
+    		$$invalidate(0, selectedJump);
+    		$$invalidate(1, jumpDates);
+    	}
+
+    	$$self.$set = $$props => {
+    		if ("selectedJump" in $$props) $$invalidate(0, selectedJump = $$props.selectedJump);
+    	};
 
     	$$self.$capture_state = () => ({
     		Datastore,
     		db,
     		jumpDates,
+    		selectedJump,
     		require,
-    		console
+    		alert
     	});
 
     	$$self.$inject_state = $$props => {
     		if ("Datastore" in $$props) Datastore = $$props.Datastore;
     		if ("db" in $$props) db = $$props.db;
-    		if ("jumpDates" in $$props) $$invalidate(0, jumpDates = $$props.jumpDates);
+    		if ("jumpDates" in $$props) $$invalidate(1, jumpDates = $$props.jumpDates);
+    		if ("selectedJump" in $$props) $$invalidate(0, selectedJump = $$props.selectedJump);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [jumpDates];
+    	return [selectedJump, jumpDates, Datastore, db, select_change_handler];
     }
 
     class Jump_selector extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, { selectedJump: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -1734,44 +1786,72 @@ var app = (function () {
     			options,
     			id: create_fragment$7.name
     		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*selectedJump*/ ctx[0] === undefined && !("selectedJump" in props)) {
+    			console.warn("<Jump_selector> was created without expected prop 'selectedJump'");
+    		}
+    	}
+
+    	get selectedJump() {
+    		throw new Error("<Jump_selector>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set selectedJump(value) {
+    		throw new Error("<Jump_selector>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
-    /* src\components\jumps.svelte generated by Svelte v3.19.1 */
-    const file$8 = "src\\components\\jumps.svelte";
+    /* src\components\display-mode-select.svelte generated by Svelte v3.19.1 */
+
+    const file$8 = "src\\components\\display-mode-select.svelte";
 
     function create_fragment$8(ctx) {
-    	let selector;
-    	let current;
-    	const jumpselector = new Jump_selector({ $$inline: true });
+    	let modeSelect;
+    	let div0;
+    	let t1;
+    	let div1;
+    	let t3;
+    	let div2;
 
     	const block = {
     		c: function create() {
-    			selector = element("selector");
-    			create_component(jumpselector.$$.fragment);
-    			add_location(selector, file$8, 4, 0, 79);
+    			modeSelect = element("modeSelect");
+    			div0 = element("div");
+    			div0.textContent = "Graphs";
+    			t1 = space();
+    			div1 = element("div");
+    			div1.textContent = "Ground Track";
+    			t3 = space();
+    			div2 = element("div");
+    			div2.textContent = "3D Track";
+    			attr_dev(div0, "class", "mode selected svelte-1mu30nr");
+    			add_location(div0, file$8, 5, 4, 43);
+    			attr_dev(div1, "class", "mode svelte-1mu30nr");
+    			add_location(div1, file$8, 6, 4, 88);
+    			attr_dev(div2, "class", "mode svelte-1mu30nr");
+    			add_location(div2, file$8, 7, 4, 130);
+    			attr_dev(modeSelect, "class", "svelte-1mu30nr");
+    			add_location(modeSelect, file$8, 4, 0, 25);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, selector, anchor);
-    			mount_component(jumpselector, selector, null);
-    			current = true;
+    			insert_dev(target, modeSelect, anchor);
+    			append_dev(modeSelect, div0);
+    			append_dev(modeSelect, t1);
+    			append_dev(modeSelect, div1);
+    			append_dev(modeSelect, t3);
+    			append_dev(modeSelect, div2);
     		},
     		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(jumpselector.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(jumpselector.$$.fragment, local);
-    			current = false;
-    		},
+    		i: noop,
+    		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(selector);
-    			destroy_component(jumpselector);
+    			if (detaching) detach_dev(modeSelect);
     		}
     	};
 
@@ -1786,76 +1866,54 @@ var app = (function () {
     	return block;
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
-    	$$self.$capture_state = () => ({ JumpSelector: Jump_selector });
-    	return [];
-    }
-
-    class Jumps extends SvelteComponentDev {
+    class Display_mode_select extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
+    		init(this, options, null, create_fragment$8, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "Jumps",
+    			tagName: "Display_mode_select",
     			options,
     			id: create_fragment$8.name
     		});
     	}
     }
 
-    /* src\components\import.svelte generated by Svelte v3.19.1 */
+    /* src\components\altgraph.svelte generated by Svelte v3.19.1 */
 
-    const file$9 = "src\\components\\import.svelte";
+    const { console: console_1$2 } = globals;
+    const file$9 = "src\\components\\altgraph.svelte";
 
     function create_fragment$9(ctx) {
-    	let import_1;
-    	let input;
-    	let t0;
+    	let graph;
     	let div;
-    	let p;
-    	let dispose;
+    	let canvas_1;
 
     	const block = {
     		c: function create() {
-    			import_1 = element("import");
-    			input = element("input");
-    			t0 = space();
+    			graph = element("graph");
     			div = element("div");
-    			p = element("p");
-    			p.textContent = "Import!";
-    			attr_dev(input, "id", "fileselector");
-    			attr_dev(input, "type", "file");
-    			add_location(input, file$9, 63, 4, 2333);
-    			attr_dev(p, "class", "svelte-7hrd5i");
-    			add_location(p, file$9, 65, 8, 2437);
-    			attr_dev(div, "class", "btn svelte-7hrd5i");
-    			add_location(div, file$9, 64, 4, 2387);
-    			attr_dev(import_1, "class", "svelte-7hrd5i");
-    			add_location(import_1, file$9, 62, 0, 2319);
+    			canvas_1 = element("canvas");
+    			attr_dev(canvas_1, "id", "altitude");
+    			add_location(canvas_1, file$9, 58, 8, 1717);
+    			attr_dev(div, "class", "container svelte-5r718z");
+    			add_location(div, file$9, 57, 4, 1684);
+    			add_location(graph, file$9, 56, 0, 1671);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, import_1, anchor);
-    			append_dev(import_1, input);
-    			append_dev(import_1, t0);
-    			append_dev(import_1, div);
-    			append_dev(div, p);
-
-    			dispose = [
-    				listen_dev(input, "change", /*input_change_handler*/ ctx[6]),
-    				listen_dev(div, "click", /*importFiles*/ ctx[1], false, false, false)
-    			];
+    			insert_dev(target, graph, anchor);
+    			append_dev(graph, div);
+    			append_dev(div, canvas_1);
     		},
     		p: noop,
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(import_1);
-    			run_all(dispose);
+    			if (detaching) detach_dev(graph);
     		}
     	};
 
@@ -1870,13 +1928,766 @@ var app = (function () {
     	return block;
     }
 
+    function instance$8($$self, $$props, $$invalidate) {
+    	var Chart = require("chart.js");
+    	let { jump } = $$props;
+    	var labels = [];
+    	var datapoints = [];
+    	var altChart;
+    	const writable_props = ["jump"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$2.warn(`<Altgraph> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		Chart,
+    		jump,
+    		labels,
+    		datapoints,
+    		altChart,
+    		canvas,
+    		require,
+    		console,
+    		document
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("Chart" in $$props) $$invalidate(4, Chart = $$props.Chart);
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    		if ("labels" in $$props) $$invalidate(1, labels = $$props.labels);
+    		if ("datapoints" in $$props) $$invalidate(2, datapoints = $$props.datapoints);
+    		if ("altChart" in $$props) $$invalidate(3, altChart = $$props.altChart);
+    		if ("canvas" in $$props) $$invalidate(5, canvas = $$props.canvas);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*jump, labels, datapoints, altChart*/ 15) {
+    			 if (typeof jump !== "undefined") {
+    				console.log(jump);
+    				let startSec;
+    				$$invalidate(1, labels = []);
+    				$$invalidate(2, datapoints = []);
+
+    				jump.forEach(point => {
+    					//console.log(point)
+    					let h = point.timestamp.substring(0, 2);
+
+    					let min = point.timestamp.substring(2, 4);
+    					let sec = point.timestamp.substring(4);
+    					let a = [h, min, sec];
+    					let seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+
+    					if (typeof startSec == "undefined") {
+    						startSec = seconds;
+    						seconds = 0;
+    					} else {
+    						seconds -= startSec;
+    					}
+
+    					labels.push(seconds);
+    					datapoints.push(point.alt);
+    				});
+
+    				console.log(labels);
+    				if (typeof altChart !== "undefined") altChart.destroy();
+    				var canvas = document.getElementById("altitude");
+
+    				$$invalidate(3, altChart = new Chart(canvas,
+    				{
+    						type: "line",
+    						data: {
+    							labels,
+    							datasets: [
+    								{
+    									label: "Altitude (m) over time",
+    									data: datapoints,
+    									fill: true,
+    									backgroundColor: "rgba(255, 99, 132, 0.2)",
+    									borderColor: "rgba(255, 99, 132, 1)",
+    									cubicInterpolationMode: "monotone",
+    									tension: 0.4
+    								}
+    							]
+    						}
+    					}));
+    			}
+    		}
+    	};
+
+    	return [jump];
+    }
+
+    class Altgraph extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$9, safe_not_equal, { jump: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Altgraph",
+    			options,
+    			id: create_fragment$9.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*jump*/ ctx[0] === undefined && !("jump" in props)) {
+    			console_1$2.warn("<Altgraph> was created without expected prop 'jump'");
+    		}
+    	}
+
+    	get jump() {
+    		throw new Error("<Altgraph>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set jump(value) {
+    		throw new Error("<Altgraph>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\VSGraph.svelte generated by Svelte v3.19.1 */
+
+    const { console: console_1$3 } = globals;
+    const file$a = "src\\components\\VSGraph.svelte";
+
+    function create_fragment$a(ctx) {
+    	let graph;
+    	let div;
+    	let canvas_1;
+
+    	const block = {
+    		c: function create() {
+    			graph = element("graph");
+    			div = element("div");
+    			canvas_1 = element("canvas");
+    			attr_dev(canvas_1, "id", "vs");
+    			add_location(canvas_1, file$a, 81, 8, 2350);
+    			attr_dev(div, "class", "container svelte-5r718z");
+    			add_location(div, file$a, 80, 4, 2317);
+    			add_location(graph, file$a, 79, 0, 2304);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, graph, anchor);
+    			append_dev(graph, div);
+    			append_dev(div, canvas_1);
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(graph);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$a.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
     function instance$9($$self, $$props, $$invalidate) {
+    	var Chart = require("chart.js");
+    	let { jump } = $$props;
+    	var labels = [];
+    	var datapoints = [];
+    	var vsChart;
+    	const writable_props = ["jump"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$3.warn(`<VSGraph> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		Chart,
+    		jump,
+    		labels,
+    		datapoints,
+    		vsChart,
+    		canvas,
+    		require,
+    		console,
+    		document
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("Chart" in $$props) $$invalidate(4, Chart = $$props.Chart);
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    		if ("labels" in $$props) $$invalidate(1, labels = $$props.labels);
+    		if ("datapoints" in $$props) $$invalidate(2, datapoints = $$props.datapoints);
+    		if ("vsChart" in $$props) $$invalidate(3, vsChart = $$props.vsChart);
+    		if ("canvas" in $$props) $$invalidate(5, canvas = $$props.canvas);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*jump, labels, datapoints, vsChart*/ 15) {
+    			 if (typeof jump !== "undefined") {
+    				console.log(jump);
+    				let startSec;
+    				$$invalidate(1, labels = []);
+    				$$invalidate(2, datapoints = []);
+    				let lastAlt = -999;
+    				let lastTime = -1;
+
+    				jump.forEach(point => {
+    					let h = point.timestamp.substring(0, 2);
+    					let min = point.timestamp.substring(2, 4);
+    					let sec = point.timestamp.substring(4);
+    					let a = [h, min, sec];
+    					let seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+    					let vs;
+    					let dz;
+    					let dt;
+
+    					if (typeof startSec == "undefined") {
+    						startSec = seconds;
+    						seconds = 0;
+    					} else {
+    						seconds -= startSec;
+    					}
+
+    					if (lastAlt == -999) {
+    						lastAlt = point.alt;
+    						dz = 0;
+    					} else {
+    						dz = lastAlt - point.alt;
+    						lastAlt = point.alt;
+    					}
+
+    					if (lastTime == -1) {
+    						vs = 0;
+    						dt = 0;
+    						lastTime = seconds;
+    					} else {
+    						dt = seconds - lastTime;
+    						lastTime = seconds;
+    						vs = dz / dt;
+    					}
+
+    					console.log(dt);
+    					labels.push(seconds);
+    					datapoints.push(vs);
+    				});
+
+    				//console.log(labels)
+    				//console.log(datapoints)
+    				if (typeof vsChart !== "undefined") vsChart.destroy();
+
+    				var canvas = document.getElementById("vs");
+
+    				$$invalidate(3, vsChart = new Chart(canvas,
+    				{
+    						type: "line",
+    						data: {
+    							labels,
+    							datasets: [
+    								{
+    									label: "Vertical Speed (m/s) over time",
+    									data: datapoints,
+    									fill: true,
+    									backgroundColor: "rgba(255, 99, 132, 0.2)",
+    									borderColor: "rgba(255, 99, 132, 1)",
+    									cubicInterpolationMode: "monotone",
+    									tension: 0.4
+    								}
+    							]
+    						}
+    					}));
+    			}
+    		}
+    	};
+
+    	return [jump];
+    }
+
+    class VSGraph extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$9, create_fragment$a, safe_not_equal, { jump: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "VSGraph",
+    			options,
+    			id: create_fragment$a.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*jump*/ ctx[0] === undefined && !("jump" in props)) {
+    			console_1$3.warn("<VSGraph> was created without expected prop 'jump'");
+    		}
+    	}
+
+    	get jump() {
+    		throw new Error("<VSGraph>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set jump(value) {
+    		throw new Error("<VSGraph>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\jump-graphs.svelte generated by Svelte v3.19.1 */
+    const file$b = "src\\components\\jump-graphs.svelte";
+
+    function create_fragment$b(ctx) {
+    	let graphs;
+    	let updating_jump;
+    	let t;
+    	let updating_jump_1;
+    	let current;
+
+    	function altgraph_jump_binding(value) {
+    		/*altgraph_jump_binding*/ ctx[1].call(null, value);
+    	}
+
+    	let altgraph_props = {};
+
+    	if (/*jump*/ ctx[0] !== void 0) {
+    		altgraph_props.jump = /*jump*/ ctx[0];
+    	}
+
+    	const altgraph = new Altgraph({ props: altgraph_props, $$inline: true });
+    	binding_callbacks.push(() => bind(altgraph, "jump", altgraph_jump_binding));
+
+    	function vsgraph_jump_binding(value) {
+    		/*vsgraph_jump_binding*/ ctx[2].call(null, value);
+    	}
+
+    	let vsgraph_props = {};
+
+    	if (/*jump*/ ctx[0] !== void 0) {
+    		vsgraph_props.jump = /*jump*/ ctx[0];
+    	}
+
+    	const vsgraph = new VSGraph({ props: vsgraph_props, $$inline: true });
+    	binding_callbacks.push(() => bind(vsgraph, "jump", vsgraph_jump_binding));
+
+    	const block = {
+    		c: function create() {
+    			graphs = element("graphs");
+    			create_component(altgraph.$$.fragment);
+    			t = space();
+    			create_component(vsgraph.$$.fragment);
+    			attr_dev(graphs, "class", "svelte-alkr4u");
+    			add_location(graphs, file$b, 6, 0, 134);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, graphs, anchor);
+    			mount_component(altgraph, graphs, null);
+    			append_dev(graphs, t);
+    			mount_component(vsgraph, graphs, null);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const altgraph_changes = {};
+
+    			if (!updating_jump && dirty & /*jump*/ 1) {
+    				updating_jump = true;
+    				altgraph_changes.jump = /*jump*/ ctx[0];
+    				add_flush_callback(() => updating_jump = false);
+    			}
+
+    			altgraph.$set(altgraph_changes);
+    			const vsgraph_changes = {};
+
+    			if (!updating_jump_1 && dirty & /*jump*/ 1) {
+    				updating_jump_1 = true;
+    				vsgraph_changes.jump = /*jump*/ ctx[0];
+    				add_flush_callback(() => updating_jump_1 = false);
+    			}
+
+    			vsgraph.$set(vsgraph_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(altgraph.$$.fragment, local);
+    			transition_in(vsgraph.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(altgraph.$$.fragment, local);
+    			transition_out(vsgraph.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(graphs);
+    			destroy_component(altgraph);
+    			destroy_component(vsgraph);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$b.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$a($$self, $$props, $$invalidate) {
+    	let { jump } = $$props;
+    	const writable_props = ["jump"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Jump_graphs> was created with unknown prop '${key}'`);
+    	});
+
+    	function altgraph_jump_binding(value) {
+    		jump = value;
+    		$$invalidate(0, jump);
+    	}
+
+    	function vsgraph_jump_binding(value) {
+    		jump = value;
+    		$$invalidate(0, jump);
+    	}
+
+    	$$self.$set = $$props => {
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    	};
+
+    	$$self.$capture_state = () => ({ jump, Altgraph, VSGraph });
+
+    	$$self.$inject_state = $$props => {
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [jump, altgraph_jump_binding, vsgraph_jump_binding];
+    }
+
+    class Jump_graphs extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$a, create_fragment$b, safe_not_equal, { jump: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Jump_graphs",
+    			options,
+    			id: create_fragment$b.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*jump*/ ctx[0] === undefined && !("jump" in props)) {
+    			console.warn("<Jump_graphs> was created without expected prop 'jump'");
+    		}
+    	}
+
+    	get jump() {
+    		throw new Error("<Jump_graphs>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set jump(value) {
+    		throw new Error("<Jump_graphs>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\jumps.svelte generated by Svelte v3.19.1 */
+    const file$c = "src\\components\\jumps.svelte";
+
+    function create_fragment$c(ctx) {
+    	let jumps;
+    	let updating_selectedJump;
+    	let t0;
+    	let t1;
+    	let current;
+
+    	function jumpselector_selectedJump_binding(value) {
+    		/*jumpselector_selectedJump_binding*/ ctx[6].call(null, value);
+    	}
+
+    	let jumpselector_props = {};
+
+    	if (/*selectedJump*/ ctx[0] !== void 0) {
+    		jumpselector_props.selectedJump = /*selectedJump*/ ctx[0];
+    	}
+
+    	const jumpselector = new Jump_selector({
+    			props: jumpselector_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(jumpselector, "selectedJump", jumpselector_selectedJump_binding));
+    	const modeselect = new Display_mode_select({ $$inline: true });
+
+    	const jumpgraphs = new Jump_graphs({
+    			props: { jump: /*selectedData*/ ctx[1] },
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			jumps = element("jumps");
+    			create_component(jumpselector.$$.fragment);
+    			t0 = space();
+    			create_component(modeselect.$$.fragment);
+    			t1 = space();
+    			create_component(jumpgraphs.$$.fragment);
+    			attr_dev(jumps, "class", "svelte-cgmf7z");
+    			add_location(jumps, file$c, 32, 0, 900);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, jumps, anchor);
+    			mount_component(jumpselector, jumps, null);
+    			append_dev(jumps, t0);
+    			mount_component(modeselect, jumps, null);
+    			append_dev(jumps, t1);
+    			mount_component(jumpgraphs, jumps, null);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const jumpselector_changes = {};
+
+    			if (!updating_selectedJump && dirty & /*selectedJump*/ 1) {
+    				updating_selectedJump = true;
+    				jumpselector_changes.selectedJump = /*selectedJump*/ ctx[0];
+    				add_flush_callback(() => updating_selectedJump = false);
+    			}
+
+    			jumpselector.$set(jumpselector_changes);
+    			const jumpgraphs_changes = {};
+    			if (dirty & /*selectedData*/ 2) jumpgraphs_changes.jump = /*selectedData*/ ctx[1];
+    			jumpgraphs.$set(jumpgraphs_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(jumpselector.$$.fragment, local);
+    			transition_in(modeselect.$$.fragment, local);
+    			transition_in(jumpgraphs.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(jumpselector.$$.fragment, local);
+    			transition_out(modeselect.$$.fragment, local);
+    			transition_out(jumpgraphs.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(jumps);
+    			destroy_component(jumpselector);
+    			destroy_component(modeselect);
+    			destroy_component(jumpgraphs);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$c.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$b($$self, $$props, $$invalidate) {
+    	var Datastore = require("nedb");
+    	var db = new Datastore("C:/Program Files/Jumpify/jumps.db");
+    	var selectedJump;
+    	var selectedData;
+    	var dbLoaded = false;
+
+    	//$: console.log(selectedData)
+    	var data = {};
+
+    	db.loadDatabase(function (err) {
+    		$$invalidate(2, dbLoaded = true);
+    		if (err) alert(err);
+
+    		db.find({}, function (err, docs) {
+    			if (err) alert(err); else {
+    				data = docs;
+    			}
+    		});
+    	});
+
+    	function jumpselector_selectedJump_binding(value) {
+    		selectedJump = value;
+    		$$invalidate(0, selectedJump);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		JumpSelector: Jump_selector,
+    		ModeSelect: Display_mode_select,
+    		JumpGraphs: Jump_graphs,
+    		Datastore,
+    		db,
+    		selectedJump,
+    		selectedData,
+    		dbLoaded,
+    		data,
+    		require,
+    		alert
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("Datastore" in $$props) Datastore = $$props.Datastore;
+    		if ("db" in $$props) $$invalidate(5, db = $$props.db);
+    		if ("selectedJump" in $$props) $$invalidate(0, selectedJump = $$props.selectedJump);
+    		if ("selectedData" in $$props) $$invalidate(1, selectedData = $$props.selectedData);
+    		if ("dbLoaded" in $$props) $$invalidate(2, dbLoaded = $$props.dbLoaded);
+    		if ("data" in $$props) data = $$props.data;
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*selectedJump, dbLoaded*/ 5) {
+    			 if (selectedJump != "Select Jump:" && dbLoaded && typeof selectedJump !== "undefined") {
+    				db.find({ date: selectedJump }, function (err, docs) {
+    					if (err) alert(err);
+    					$$invalidate(1, selectedData = docs[0].data);
+    				});
+    			}
+    		}
+    	};
+
+    	return [
+    		selectedJump,
+    		selectedData,
+    		dbLoaded,
+    		data,
+    		Datastore,
+    		db,
+    		jumpselector_selectedJump_binding
+    	];
+    }
+
+    class Jumps extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$b, create_fragment$c, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Jumps",
+    			options,
+    			id: create_fragment$c.name
+    		});
+    	}
+    }
+
+    /* src\components\import.svelte generated by Svelte v3.19.1 */
+
+    const file$d = "src\\components\\import.svelte";
+
+    function create_fragment$d(ctx) {
+    	let import_1;
+    	let input_1;
+    	let t0;
+    	let div;
+    	let p;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			import_1 = element("import");
+    			input_1 = element("input");
+    			t0 = space();
+    			div = element("div");
+    			p = element("p");
+    			p.textContent = "Import!";
+    			attr_dev(input_1, "id", "fileselector");
+    			attr_dev(input_1, "type", "file");
+    			add_location(input_1, file$d, 73, 4, 2673);
+    			attr_dev(p, "class", "svelte-7hrd5i");
+    			add_location(p, file$d, 75, 8, 2795);
+    			attr_dev(div, "class", "btn svelte-7hrd5i");
+    			add_location(div, file$d, 74, 4, 2745);
+    			attr_dev(import_1, "class", "svelte-7hrd5i");
+    			add_location(import_1, file$d, 72, 0, 2659);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, import_1, anchor);
+    			append_dev(import_1, input_1);
+    			/*input_1_binding*/ ctx[7](input_1);
+    			append_dev(import_1, t0);
+    			append_dev(import_1, div);
+    			append_dev(div, p);
+
+    			dispose = [
+    				listen_dev(input_1, "change", /*input_1_change_handler*/ ctx[8]),
+    				listen_dev(div, "click", /*importFiles*/ ctx[2], false, false, false)
+    			];
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(import_1);
+    			/*input_1_binding*/ ctx[7](null);
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$d.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$c($$self, $$props, $$invalidate) {
     	var fs = require("fs"); // Load the File System to execute our common tasks (CRUD)
     	var nmea = require("nmea");
     	var Datastore = require("nedb");
     	var db = new Datastore("C:/Program Files/Jumpify/jumps.db");
     	db.loadDatabase();
     	console.log(db);
+    	let input;
     	let files;
 
     	function importFiles() {
@@ -1892,7 +2703,7 @@ var app = (function () {
     				}
 
     				let lines = data.split("\n");
-    				let parsedRMCData = [];
+    				let parsedData = [];
     				let date = 0;
 
     				lines.forEach(line => {
@@ -1904,38 +2715,52 @@ var app = (function () {
     						console.log(e); //console.log(parsed)
     					}
 
-    					if (typeof parsed !== "undefined" && parsed.sentence == "RMC") {
-    						if (date == 0) {
-    							let parseddate = parsed.date;
-    							let timestamp = parsed.timestamp;
-    							let d = parseddate.substring(0, 2);
-    							let m = parseddate.substring(2, 4);
-    							let y = parseddate.substring(4, 6);
-    							let h = timestamp.substring(0, 2);
-    							let min = timestamp.substring(2, 4);
-    							let utc_str = `20${y}-${m}-${d}T${h}:${min}Z`;
-    							let dt = new Date(utc_str);
-    							date = dt.toString();
-    						}
+    					if (typeof parsed !== "undefined" && parsed.sentence == "RMC" && date == 0) {
+    						let parseddate = parsed.date;
+    						let timestamp = parsed.timestamp;
+    						let d = parseddate.substring(0, 2);
+    						let m = parseddate.substring(2, 4);
+    						let y = parseddate.substring(4, 6);
+    						let h = timestamp.substring(0, 2);
+    						let min = timestamp.substring(2, 4);
+    						let sec = timestamp.substring(4, 6);
+    						let utc_str = `20${y}-${m}-${d}T${h}:${min}:${sec}Z`;
+    						let dt = new Date(utc_str);
+    						date = dt.toString();
+    					}
 
-    						parsedRMCData.push(parsed);
+    					if (typeof parsed !== "undefined" && parsed.sentence == "GGA") {
+    						parsedData.push(parsed);
+    					}
+
+    					if (typeof parsed !== "undefined" && parsed.sentence == "RMC") {
+    						console.log(parsed.speedKnots);
+    						parsedData[parsedData.length - 1].speedKnots = parsed.speedKnots;
     					}
     				});
 
-    				// Change how to handle the file content
-    				//console.log("The file content is : " + data);
-    				var doc = { date, data: parsedRMCData };
+    				console.log(parsedData);
+    				var doc = { date, data: parsedData };
 
     				db.insert(doc, function (err, newDoc) {
     					if (err) alert(err);
     				});
+
+    				alert("Import Success");
+    				$$invalidate(0, input.value = "", input);
     			});
     		}
     	}
 
-    	function input_change_handler() {
+    	function input_1_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			$$invalidate(0, input = $$value);
+    		});
+    	}
+
+    	function input_1_change_handler() {
     		files = this.files;
-    		$$invalidate(0, files);
+    		$$invalidate(1, files);
     	}
 
     	$$self.$capture_state = () => ({
@@ -1943,6 +2768,7 @@ var app = (function () {
     		nmea,
     		Datastore,
     		db,
+    		input,
     		files,
     		importFiles,
     		require,
@@ -1956,32 +2782,43 @@ var app = (function () {
     		if ("nmea" in $$props) nmea = $$props.nmea;
     		if ("Datastore" in $$props) Datastore = $$props.Datastore;
     		if ("db" in $$props) db = $$props.db;
-    		if ("files" in $$props) $$invalidate(0, files = $$props.files);
+    		if ("input" in $$props) $$invalidate(0, input = $$props.input);
+    		if ("files" in $$props) $$invalidate(1, files = $$props.files);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [files, importFiles, fs, nmea, Datastore, db, input_change_handler];
+    	return [
+    		input,
+    		files,
+    		importFiles,
+    		fs,
+    		nmea,
+    		Datastore,
+    		db,
+    		input_1_binding,
+    		input_1_change_handler
+    	];
     }
 
     class Import extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$9, create_fragment$9, safe_not_equal, {});
+    		init(this, options, instance$c, create_fragment$d, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Import",
     			options,
-    			id: create_fragment$9.name
+    			id: create_fragment$d.name
     		});
     	}
     }
 
     /* src\App.svelte generated by Svelte v3.19.1 */
-    const file$a = "src\\App.svelte";
+    const file$e = "src\\App.svelte";
 
     // (12:1) {#if page == 1}
     function create_if_block_2(ctx) {
@@ -2097,7 +2934,7 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$a(ctx) {
+    function create_fragment$e(ctx) {
     	let main;
     	let updating_page;
     	let t0;
@@ -2132,7 +2969,7 @@ var app = (function () {
     			t2 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(main, "class", "svelte-1thuva1");
-    			add_location(main, file$a, 9, 0, 254);
+    			add_location(main, file$e, 9, 0, 254);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2242,7 +3079,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$a.name,
+    		id: create_fragment$e.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2251,9 +3088,9 @@ var app = (function () {
     	return block;
     }
 
-    function instance$a($$self, $$props, $$invalidate) {
+    function instance$d($$self, $$props, $$invalidate) {
     	let { name } = $$props;
-    	var page = 3;
+    	var page = 2;
     	const writable_props = ["name"];
 
     	Object.keys($$props).forEach(key => {
@@ -2286,13 +3123,13 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$a, create_fragment$a, safe_not_equal, { name: 1 });
+    		init(this, options, instance$d, create_fragment$e, safe_not_equal, { name: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "App",
     			options,
-    			id: create_fragment$a.name
+    			id: create_fragment$e.name
     		});
 
     		const { ctx } = this.$$;
