@@ -1270,18 +1270,18 @@ var app = (function () {
     			card = element("card");
     			div = element("div");
     			p0 = element("p");
-    			t0 = text(/*statType*/ ctx[0]);
+    			t0 = text(/*statType*/ ctx[1]);
     			t1 = space();
     			p1 = element("p");
-    			t2 = text(/*statValue*/ ctx[1]);
+    			t2 = text(/*statValue*/ ctx[0]);
     			attr_dev(p0, "class", "type svelte-1tkkchg");
-    			add_location(p0, file$4, 28, 8, 668);
+    			add_location(p0, file$4, 28, 8, 675);
     			attr_dev(p1, "class", "value svelte-1tkkchg");
-    			add_location(p1, file$4, 29, 8, 708);
+    			add_location(p1, file$4, 29, 8, 715);
     			attr_dev(div, "class", "text svelte-1tkkchg");
-    			add_location(div, file$4, 27, 4, 640);
+    			add_location(div, file$4, 27, 4, 647);
     			attr_dev(card, "class", "svelte-1tkkchg");
-    			add_location(card, file$4, 26, 0, 628);
+    			add_location(card, file$4, 26, 0, 635);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1296,8 +1296,8 @@ var app = (function () {
     			append_dev(p1, t2);
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*statType*/ 1) set_data_dev(t0, /*statType*/ ctx[0]);
-    			if (dirty & /*statValue*/ 2) set_data_dev(t2, /*statValue*/ ctx[1]);
+    			if (dirty & /*statType*/ 2) set_data_dev(t0, /*statType*/ ctx[1]);
+    			if (dirty & /*statValue*/ 1) set_data_dev(t2, /*statValue*/ ctx[0]);
     		},
     		i: noop,
     		o: noop,
@@ -1319,7 +1319,7 @@ var app = (function () {
 
     function instance$4($$self, $$props, $$invalidate) {
     	let { statType } = $$props;
-    	let statValue;
+    	let { statValue } = $$props;
 
     	switch (statType) {
     		case "Jumps Logged":
@@ -1342,34 +1342,35 @@ var app = (function () {
     			break;
     	}
 
-    	const writable_props = ["statType"];
+    	const writable_props = ["statType", "statValue"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Stat_card> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$set = $$props => {
-    		if ("statType" in $$props) $$invalidate(0, statType = $$props.statType);
+    		if ("statType" in $$props) $$invalidate(1, statType = $$props.statType);
+    		if ("statValue" in $$props) $$invalidate(0, statValue = $$props.statValue);
     	};
 
     	$$self.$capture_state = () => ({ statType, statValue });
 
     	$$self.$inject_state = $$props => {
-    		if ("statType" in $$props) $$invalidate(0, statType = $$props.statType);
-    		if ("statValue" in $$props) $$invalidate(1, statValue = $$props.statValue);
+    		if ("statType" in $$props) $$invalidate(1, statType = $$props.statType);
+    		if ("statValue" in $$props) $$invalidate(0, statValue = $$props.statValue);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [statType, statValue];
+    	return [statValue, statType];
     }
 
     class Stat_card extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { statType: 0 });
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, { statType: 1, statValue: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -1381,8 +1382,12 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*statType*/ ctx[0] === undefined && !("statType" in props)) {
+    		if (/*statType*/ ctx[1] === undefined && !("statType" in props)) {
     			console.warn("<Stat_card> was created without expected prop 'statType'");
+    		}
+
+    		if (/*statValue*/ ctx[0] === undefined && !("statValue" in props)) {
+    			console.warn("<Stat_card> was created without expected prop 'statValue'");
     		}
     	}
 
@@ -1391,6 +1396,14 @@ var app = (function () {
     	}
 
     	set statType(value) {
+    		throw new Error("<Stat_card>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get statValue() {
+    		throw new Error("<Stat_card>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set statValue(value) {
     		throw new Error("<Stat_card>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -1410,7 +1423,10 @@ var app = (function () {
     	let current;
 
     	const card0 = new Stat_card({
-    			props: { statType: "Jumps Logged" },
+    			props: {
+    				statType: "Jumps Logged",
+    				statValue: /*stats*/ ctx[0].jumpsLogged
+    			},
     			$$inline: true
     		});
 
@@ -1420,7 +1436,10 @@ var app = (function () {
     		});
 
     	const card2 = new Stat_card({
-    			props: { statType: "Jumps Logged Today" },
+    			props: {
+    				statType: "Jumps Logged Today",
+    				statValue: /*stats*/ ctx[0].jumpsToday
+    			},
     			$$inline: true
     		});
 
@@ -1456,11 +1475,11 @@ var app = (function () {
     			t4 = space();
     			create_component(card5.$$.fragment);
     			attr_dev(div0, "class", "row svelte-1o1d03h");
-    			add_location(div0, file$5, 5, 4, 83);
+    			add_location(div0, file$5, 37, 4, 1201);
     			attr_dev(div1, "class", "row svelte-1o1d03h");
-    			add_location(div1, file$5, 10, 4, 273);
+    			add_location(div1, file$5, 42, 4, 1450);
     			attr_dev(container, "class", "svelte-1o1d03h");
-    			add_location(container, file$5, 4, 0, 66);
+    			add_location(container, file$5, 36, 0, 1184);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1482,7 +1501,14 @@ var app = (function () {
     			mount_component(card5, div1, null);
     			current = true;
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			const card0_changes = {};
+    			if (dirty & /*stats*/ 1) card0_changes.statValue = /*stats*/ ctx[0].jumpsLogged;
+    			card0.$set(card0_changes);
+    			const card2_changes = {};
+    			if (dirty & /*stats*/ 1) card2_changes.statValue = /*stats*/ ctx[0].jumpsToday;
+    			card2.$set(card2_changes);
+    		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(card0.$$.fragment, local);
@@ -1525,8 +1551,64 @@ var app = (function () {
     }
 
     function instance$5($$self, $$props, $$invalidate) {
-    	$$self.$capture_state = () => ({ Card: Stat_card });
-    	return [];
+    	var Datastore = require("nedb");
+    	var statsDB = new Datastore("C:/Program Files/Jumpify/stats.db");
+    	var jumpsDB = new Datastore("C:/Program Files/Jumpify/jumps.db");
+    	var stats = {};
+
+    	statsDB.loadDatabase(function (err) {
+    		if (err) alert(err);
+
+    		statsDB.find({}, function (err, docs) {
+    			$$invalidate(0, stats = docs[0]);
+    		});
+
+    		jumpsDB.loadDatabase(function (err) {
+    			if (err) alert(err);
+
+    			jumpsDB.find({}, { date: 1 }, function (err, docs) {
+    				if (err) alert(err); else {
+    					let jumpsToday = 0;
+    					let today = new Date().toISOString().split("T")[0];
+
+    					for (let i = 0; i < docs.length; i++) {
+    						let d = new Date(docs[i].date);
+    						let jumpDate = d.toISOString().split("T")[0];
+
+    						if (jumpDate == today) {
+    							jumpsToday++;
+    						}
+    					}
+
+    					$$invalidate(0, stats.jumpsToday = jumpsToday, stats);
+    				}
+    			});
+    		});
+    	});
+
+    	$$self.$capture_state = () => ({
+    		Card: Stat_card,
+    		Datastore,
+    		statsDB,
+    		jumpsDB,
+    		stats,
+    		require,
+    		alert,
+    		Date
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("Datastore" in $$props) Datastore = $$props.Datastore;
+    		if ("statsDB" in $$props) statsDB = $$props.statsDB;
+    		if ("jumpsDB" in $$props) jumpsDB = $$props.jumpsDB;
+    		if ("stats" in $$props) $$invalidate(0, stats = $$props.stats);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [stats];
     }
 
     class Stat_card_container extends SvelteComponentDev {
@@ -16672,13 +16754,13 @@ var app = (function () {
     			p.textContent = "Import!";
     			attr_dev(input_1, "id", "fileselector");
     			attr_dev(input_1, "type", "file");
-    			add_location(input_1, file$f, 92, 4, 3313);
+    			add_location(input_1, file$f, 109, 4, 3983);
     			attr_dev(p, "class", "svelte-7hrd5i");
-    			add_location(p, file$f, 94, 8, 3435);
+    			add_location(p, file$f, 111, 8, 4105);
     			attr_dev(div, "class", "btn svelte-7hrd5i");
-    			add_location(div, file$f, 93, 4, 3385);
+    			add_location(div, file$f, 110, 4, 4055);
     			attr_dev(import_1, "class", "svelte-7hrd5i");
-    			add_location(import_1, file$f, 91, 0, 3299);
+    			add_location(import_1, file$f, 108, 0, 3969);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16686,13 +16768,13 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, import_1, anchor);
     			append_dev(import_1, input_1);
-    			/*input_1_binding*/ ctx[8](input_1);
+    			/*input_1_binding*/ ctx[10](input_1);
     			append_dev(import_1, t0);
     			append_dev(import_1, div);
     			append_dev(div, p);
 
     			dispose = [
-    				listen_dev(input_1, "change", /*input_1_change_handler*/ ctx[9]),
+    				listen_dev(input_1, "change", /*input_1_change_handler*/ ctx[11]),
     				listen_dev(div, "click", /*importFiles*/ ctx[2], false, false, false)
     			];
     		},
@@ -16701,7 +16783,7 @@ var app = (function () {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(import_1);
-    			/*input_1_binding*/ ctx[8](null);
+    			/*input_1_binding*/ ctx[10](null);
     			run_all(dispose);
     		}
     	};
@@ -16721,19 +16803,23 @@ var app = (function () {
     	var fs = require("fs"); // Load the File System to execute our common tasks (CRUD)
     	var nmea = require("nmea");
     	var Datastore = require("nedb");
-    	var db = new Datastore("C:/Program Files/Jumpify/jumps.db");
-    	db.loadDatabase();
+    	var jumpsDB = new Datastore("C:/Program Files/Jumpify/jumps.db");
+    	var statsDB = new Datastore("C:/Program Files/Jumpify/stats.db");
+    	jumpsDB.loadDatabase();
+    	statsDB.loadDatabase();
     	let input;
     	let files;
     	var existingJumpDates = [];
 
-    	db.loadDatabase(function (err) {
+    	jumpsDB.loadDatabase(function (err) {
     		if (err) alert(err);
 
-    		db.find({}, { date: 1 }, function (err, docs) {
+    		jumpsDB.find({}, { date: 1 }, function (err, docs) {
     			if (err) alert(err); else {
     				existingJumpDates = docs;
     			}
+
+    			generateStats();
     		});
     	});
 
@@ -16796,18 +16882,34 @@ var app = (function () {
     					console.log(existingJumpDates);
     					var doc = { date, data: parsedData };
 
-    					db.insert(doc, function (err, newDoc) {
+    					jumpsDB.insert(doc, function (err, newDoc) {
     						if (err) alert(err);
+    						generateStats();
     					});
 
     					alert("Import Success");
     				} else {
     					alert("ERROR: Jump already imported");
+    					generateStats();
     				}
 
     				$$invalidate(0, input.value = "", input);
     			});
     		}
+    	}
+
+    	function generateStats() {
+    		statsDB.remove({}, { multi: true }, function (err, numRemoved) {
+    			jumpsDB.find({}, function (err, docs) {
+    				console.log(docs);
+    				let jumpsLogged = docs.length;
+    				let stats = { jumpsLogged };
+
+    				statsDB.insert(stats, function (err, newDow) {
+    					if (err) alert(err);
+    				});
+    			});
+    		});
     	}
 
     	function input_1_binding($$value) {
@@ -16825,11 +16927,13 @@ var app = (function () {
     		fs,
     		nmea,
     		Datastore,
-    		db,
+    		jumpsDB,
+    		statsDB,
     		input,
     		files,
     		existingJumpDates,
     		importFiles,
+    		generateStats,
     		require,
     		alert,
     		console,
@@ -16840,7 +16944,8 @@ var app = (function () {
     		if ("fs" in $$props) fs = $$props.fs;
     		if ("nmea" in $$props) nmea = $$props.nmea;
     		if ("Datastore" in $$props) Datastore = $$props.Datastore;
-    		if ("db" in $$props) db = $$props.db;
+    		if ("jumpsDB" in $$props) jumpsDB = $$props.jumpsDB;
+    		if ("statsDB" in $$props) statsDB = $$props.statsDB;
     		if ("input" in $$props) $$invalidate(0, input = $$props.input);
     		if ("files" in $$props) $$invalidate(1, files = $$props.files);
     		if ("existingJumpDates" in $$props) existingJumpDates = $$props.existingJumpDates;
@@ -16858,7 +16963,9 @@ var app = (function () {
     		fs,
     		nmea,
     		Datastore,
-    		db,
+    		jumpsDB,
+    		statsDB,
+    		generateStats,
     		input_1_binding,
     		input_1_change_handler
     	];
@@ -17151,7 +17258,7 @@ var app = (function () {
 
     function instance$h($$self, $$props, $$invalidate) {
     	let { name } = $$props;
-    	var page = 2;
+    	var page = 1;
     	const writable_props = ["name"];
 
     	Object.keys($$props).forEach(key => {

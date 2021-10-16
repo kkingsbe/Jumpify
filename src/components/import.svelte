@@ -2,21 +2,24 @@
     var fs = require('fs'); // Load the File System to execute our common tasks (CRUD)
     var nmea = require('nmea')
     var Datastore = require("nedb")
-    var db = new Datastore("C:/Program Files/Jumpify/jumps.db")
-    db.loadDatabase()
+    var jumpsDB = new Datastore("C:/Program Files/Jumpify/jumps.db")
+    var statsDB = new Datastore("C:/Program Files/Jumpify/stats.db")
+    jumpsDB.loadDatabase()
+    statsDB.loadDatabase()
 
     let input;
     let files;
 
     var existingJumpDates = [];
 
-    db.loadDatabase(function(err) {
+    jumpsDB.loadDatabase(function(err) {
         if(err) alert(err)
-        db.find({}, {date: 1}, function(err, docs) {
+        jumpsDB.find({}, {date: 1}, function(err, docs) {
             if(err) alert(err)
             else {
                 existingJumpDates = docs;
             }
+            generateStats()
         })
     })
 
@@ -75,17 +78,31 @@
                         date: date,
                         data: parsedData
                     }
-                    db.insert(doc, function(err, newDoc) {
+                    jumpsDB.insert(doc, function(err, newDoc) {
                         if(err) alert(err)
+                        generateStats()
                     })
                     alert("Import Success")
                 } else {
                     alert("ERROR: Jump already imported")
+                    generateStats()
                 }
-                
                 input.value = ''
             });
         }
+    }
+
+    function generateStats() {
+        statsDB.remove({ }, { multi: true }, function (err, numRemoved) {
+            jumpsDB.find({}, function(err, docs) {
+                console.log(docs)
+                let jumpsLogged = docs.length
+                let stats = {jumpsLogged: jumpsLogged}
+                statsDB.insert(stats, function(err, newDow) {
+                    if(err) alert(err)
+                })
+            })
+        });
     }
 </script>
 

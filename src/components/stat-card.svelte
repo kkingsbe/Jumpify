@@ -1,6 +1,6 @@
 <script>
     export let statType
-    let statValue;
+    export let statValue;
 
     switch (statType) {
         case "Jumps Logged":

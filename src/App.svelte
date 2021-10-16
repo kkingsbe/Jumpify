@@ -4,7 +4,7 @@
 	import Home from "./components/home.svelte"
 	import Jumps from "./components/jumps.svelte"
 	import Import from "./components/import.svelte"
-	var page = 2;
+	var page = 1;
 </script>
 
 <main>
