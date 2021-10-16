@@ -4,10 +4,21 @@
     var Datastore = require("nedb")
     var db = new Datastore("C:/Program Files/Jumpify/jumps.db")
     db.loadDatabase()
-    console.log(db)
 
     let input;
     let files;
+
+    var existingJumpDates = [];
+
+    db.loadDatabase(function(err) {
+        if(err) alert(err)
+        db.find({}, {date: 1}, function(err, docs) {
+            if(err) alert(err)
+            else {
+                existingJumpDates = docs;
+            }
+        })
+    })
 
     function importFiles() {
         console.log(files)
@@ -54,16 +65,24 @@
                     }
                 })
 
-                console.log(parsedData)
-
-                var doc = {
-                    date: date,
-                    data: parsedData
-                }
-                db.insert(doc, function(err, newDoc) {
-                    if(err) alert(err)
+                let alreadyExists = false
+                existingJumpDates.forEach(d => {
+                    if(d.date == date) alreadyExists = true
                 })
-                alert("Import Success")
+                if(!alreadyExists) {
+                    console.log(existingJumpDates)
+                    var doc = {
+                        date: date,
+                        data: parsedData
+                    }
+                    db.insert(doc, function(err, newDoc) {
+                        if(err) alert(err)
+                    })
+                    alert("Import Success")
+                } else {
+                    alert("ERROR: Jump already imported")
+                }
+                
                 input.value = ''
             });
         }

@@ -2635,13 +2635,13 @@ var app = (function () {
     			p.textContent = "Import!";
     			attr_dev(input_1, "id", "fileselector");
     			attr_dev(input_1, "type", "file");
-    			add_location(input_1, file$d, 73, 4, 2673);
+    			add_location(input_1, file$d, 92, 4, 3313);
     			attr_dev(p, "class", "svelte-7hrd5i");
-    			add_location(p, file$d, 75, 8, 2795);
+    			add_location(p, file$d, 94, 8, 3435);
     			attr_dev(div, "class", "btn svelte-7hrd5i");
-    			add_location(div, file$d, 74, 4, 2745);
+    			add_location(div, file$d, 93, 4, 3385);
     			attr_dev(import_1, "class", "svelte-7hrd5i");
-    			add_location(import_1, file$d, 72, 0, 2659);
+    			add_location(import_1, file$d, 91, 0, 3299);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2649,13 +2649,13 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, import_1, anchor);
     			append_dev(import_1, input_1);
-    			/*input_1_binding*/ ctx[7](input_1);
+    			/*input_1_binding*/ ctx[8](input_1);
     			append_dev(import_1, t0);
     			append_dev(import_1, div);
     			append_dev(div, p);
 
     			dispose = [
-    				listen_dev(input_1, "change", /*input_1_change_handler*/ ctx[8]),
+    				listen_dev(input_1, "change", /*input_1_change_handler*/ ctx[9]),
     				listen_dev(div, "click", /*importFiles*/ ctx[2], false, false, false)
     			];
     		},
@@ -2664,7 +2664,7 @@ var app = (function () {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(import_1);
-    			/*input_1_binding*/ ctx[7](null);
+    			/*input_1_binding*/ ctx[8](null);
     			run_all(dispose);
     		}
     	};
@@ -2686,9 +2686,19 @@ var app = (function () {
     	var Datastore = require("nedb");
     	var db = new Datastore("C:/Program Files/Jumpify/jumps.db");
     	db.loadDatabase();
-    	console.log(db);
     	let input;
     	let files;
+    	var existingJumpDates = [];
+
+    	db.loadDatabase(function (err) {
+    		if (err) alert(err);
+
+    		db.find({}, { date: 1 }, function (err, docs) {
+    			if (err) alert(err); else {
+    				existingJumpDates = docs;
+    			}
+    		});
+    	});
 
     	function importFiles() {
     		console.log(files);
@@ -2739,14 +2749,25 @@ var app = (function () {
     					}
     				});
 
-    				console.log(parsedData);
-    				var doc = { date, data: parsedData };
+    				let alreadyExists = false;
 
-    				db.insert(doc, function (err, newDoc) {
-    					if (err) alert(err);
+    				existingJumpDates.forEach(d => {
+    					if (d.date == date) alreadyExists = true;
     				});
 
-    				alert("Import Success");
+    				if (!alreadyExists) {
+    					console.log(existingJumpDates);
+    					var doc = { date, data: parsedData };
+
+    					db.insert(doc, function (err, newDoc) {
+    						if (err) alert(err);
+    					});
+
+    					alert("Import Success");
+    				} else {
+    					alert("ERROR: Jump already imported");
+    				}
+
     				$$invalidate(0, input.value = "", input);
     			});
     		}
@@ -2770,10 +2791,11 @@ var app = (function () {
     		db,
     		input,
     		files,
+    		existingJumpDates,
     		importFiles,
     		require,
-    		console,
     		alert,
+    		console,
     		Date
     	});
 
@@ -2784,6 +2806,7 @@ var app = (function () {
     		if ("db" in $$props) db = $$props.db;
     		if ("input" in $$props) $$invalidate(0, input = $$props.input);
     		if ("files" in $$props) $$invalidate(1, files = $$props.files);
+    		if ("existingJumpDates" in $$props) existingJumpDates = $$props.existingJumpDates;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2794,6 +2817,7 @@ var app = (function () {
     		input,
     		files,
     		importFiles,
+    		existingJumpDates,
     		fs,
     		nmea,
     		Datastore,
