@@ -1,13 +1,13 @@
 <script>
-    var Chart = require("chart.js")
+    import Line from "svelte-chartjs/src/Line.svelte"
     export let jump
 
     var labels = []
     var datapoints = []
-    var vsChart
+    var chartData
 
     $: if(typeof(jump) !== "undefined") {
-        console.log(jump)
+        //console.log(jump)
         let startSec
         labels = []
         datapoints = []
@@ -47,44 +47,40 @@
                 lastTime = seconds
                 vs = dz/dt
             }
-            console.log(dt)
+            //console.log(dt)
             labels.push(seconds)
             datapoints.push(vs)
         })
         //console.log(labels)
         //console.log(datapoints)
 
-        if(typeof(vsChart) !== "undefined")
-            vsChart.destroy()
-        var canvas = document.getElementById("vs")
-        vsChart = new Chart(canvas, {
-            type: "line",
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: "Vertical Speed (m/s) over time",
-                        data: datapoints,
-                        fill: true,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgba(255, 99, 132, 1)",
-                        cubicInterpolationMode: 'monotone',
-                        tension: 0.4
-                    }
-                ]
-            }
-        })
+        chartData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Vertical Speed (m/s) over time",
+                    data: datapoints,
+                    fill: true,
+                    backgroundColor: "rgba(130, 99, 255, 0.2)",
+                    borderColor: "rgba(130, 99, 255, 1)",
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                }
+            ]
+        }
     }
 </script>
 
 <graph>
+    {#if typeof(jump) !== "undefined"}
     <div class="container">
-        <canvas id="vs"></canvas>
+        <Line data={chartData}></Line>
     </div>
+    {/if}
 </graph>
 
 <style>
     .container {
-        width: 30vw;
+        width: 50vw;
     }
 </style>

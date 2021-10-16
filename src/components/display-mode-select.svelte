@@ -1,11 +1,53 @@
 <script>
+    export let selectedMode
 
+    let graphsSelected = true
+    let groundTrackSelected = false
+    let track3DSelected = false
+    let graphsClass = "mode selected"
+    let groundTrackClass = "mode"
+    let track3DClass = "mode"
+
+    function selectGraphs() {
+        graphsSelected = true
+        groundTrackSelected = false
+        track3DSelected = false
+
+        selectedMode = "graphs"
+
+        graphsClass = "mode selected"
+        groundTrackClass = "mode"
+        track3DClass = "mode"
+    }
+
+    function selectGroundTrack() {
+        graphsSelected = false
+        groundTrackSelected = true
+        track3DSelected = false
+
+        selectedMode = "ground track"
+
+        graphsClass = "mode"
+        groundTrackClass = "mode selected"
+        track3DClass = "mode"
+    }
+
+    function selectTrack3D() {
+        graphsSelected = false
+        groundTrackSelected = false
+        track3DSelected = true
+
+        selectedMode = "track 3d"
+        graphsClass = "mode"
+        groundTrackClass = "mode"
+        track3DClass = "mode selected"
+    }
 </script>
 
 <modeSelect>
-    <div class="mode selected">Graphs</div>
-    <div class="mode">Ground Track</div>
-    <div class="mode">3D Track</div>
+    <div class={graphsClass} on:click={selectGraphs}>Graphs</div>
+    <div class={groundTrackClass} on:click={selectGroundTrack}>Ground Track</div>
+    <div class={track3DClass} on:click={selectTrack3D}>3D Track</div>
 </modeSelect>
 
 <style>
@@ -15,6 +57,7 @@
         justify-content: space-around;
         width: 100%;
         margin-top: 2vw;
+        margin-bottom: 2vw;
     }
 
     .mode {

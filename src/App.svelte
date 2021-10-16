@@ -28,6 +28,7 @@
 		flex-direction: row;
 		height: 100%;
 		width: 100%;
-		background: whitel
+		background: white;
+		overflow-y: hidden;
 	}
 </style>

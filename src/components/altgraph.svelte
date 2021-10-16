@@ -1,13 +1,13 @@
 <script>
-    var Chart = require("chart.js")
+    import Line from "svelte-chartjs/src/Line.svelte"
     export let jump
 
     var labels = []
     var datapoints = []
-    var altChart
+    var chartData
 
     $: if(typeof(jump) !== "undefined") {
-        console.log(jump)
+        //console.log(jump)
         let startSec
         labels = []
         datapoints = []
@@ -29,39 +29,36 @@
             labels.push(seconds)
             datapoints.push(point.alt)
         })
-        console.log(labels)
-
-        if(typeof(altChart) !== "undefined")
-			altChart.destroy()
-        var canvas = document.getElementById("altitude")
-        altChart = new Chart(canvas, {
-            type: "line",
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: "Altitude (m) over time",
-                        data: datapoints,
-                        fill: true,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgba(255, 99, 132, 1)",
-                        cubicInterpolationMode: 'monotone',
-                        tension: 0.4
-                    }
-                ]
-            }
-        })
+        //console.log(labels)
+        
+        chartData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Altitude (m) over time",
+                    data: datapoints,
+                    fill: true,
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                }
+            ]
+        }
     }
 </script>
 
 <graph>
+    {#if typeof(jump) !== "undefined"}
     <div class="container">
-        <canvas id="altitude"></canvas>
+        <Line data={chartData}></Line>
     </div>
+    {/if}
 </graph>
+
 
 <style>
     .container {
-        width: 30vw;
+        width: 50vw;
     }
 </style>
