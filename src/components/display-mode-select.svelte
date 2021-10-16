@@ -71,6 +71,7 @@
     }
 
     .selected {
-        background: #007bff !important;
+        background: rgb(255, 212, 40) !important;
+        color: rgb(56, 56, 56);
     }
 </style>

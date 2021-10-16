@@ -82,5 +82,10 @@
 <style>
     .container {
         width: 50vw;
+        background: white;
+        margin-top: 2vw;
+        border-radius: 1.5vw;
+        padding: 2vw;
+        box-shadow: 3px 3px 7px rgb(0 0 0 / 0.3);
     }
 </style>

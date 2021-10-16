@@ -41,7 +41,7 @@
         background: #FFB869;
         border-radius: 1.5vw;
         padding: 1vw;
-        border: 5px solid gray;
+        border: 3px solid rgb(80, 80, 80);
         box-shadow: 3px 3px 7px rgb(0 0 0 / 0.3);
     }
 
@@ -58,7 +58,8 @@
         margin-right: auto;
         margin-left: 0vw;
         font-size: 1.5vw;
-        color: rgb(54, 54, 54);
+        font-weight: normal;
+        color: rgb(0, 0, 0);
     }
 
     .value {

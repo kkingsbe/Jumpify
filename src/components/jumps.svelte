@@ -2,6 +2,7 @@
     import JumpSelector from "./jump-selector.svelte";
     import ModeSelect from "./display-mode-select.svelte"
     import JumpGraphs from "./jump-graphs.svelte"
+    import GroundTrack from "./groundtrack.svelte"
     
     var selectedMode = "graphs"
 
@@ -37,6 +38,9 @@
     <ModeSelect bind:selectedMode={selectedMode}></ModeSelect>
     {#if selectedMode == "graphs"}
         <JumpGraphs jump={selectedData}></JumpGraphs>
+    {/if}
+    {#if selectedMode == "ground track"}
+        <GroundTrack jump={selectedData}></GroundTrack>
     {/if}
 </jumps>
 

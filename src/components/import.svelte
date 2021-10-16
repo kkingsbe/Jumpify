@@ -72,6 +72,7 @@
                 existingJumpDates.forEach(d => {
                     if(d.date == date) alreadyExists = true
                 })
+                console.log(parsedData)
                 if(!alreadyExists) {
                     console.log(existingJumpDates)
                     var doc = {
@@ -95,7 +96,6 @@
     function generateStats() {
         statsDB.remove({ }, { multi: true }, function (err, numRemoved) {
             jumpsDB.find({}, function(err, docs) {
-                console.log(docs)
                 let jumpsLogged = docs.length
                 let stats = {jumpsLogged: jumpsLogged}
                 statsDB.insert(stats, function(err, newDow) {
@@ -107,9 +107,12 @@
 </script>
 
 <import>
-    <input id="fileselector" type="file" bind:this={input} bind:files>
-    <div class="btn" on:click={importFiles}>
-        <p>Import!</p>
+    <div class="card">
+        <p class="title">Import Data:</p>
+        <input id="fileselector" type="file" bind:this={input} bind:files>
+        <div class="btn" on:click={importFiles}>
+            <p>Import!</p>
+        </div>
     </div>
 </import>
 
@@ -139,5 +142,27 @@
         color: white;
         margin: 0;
         padding: 0;
+    }
+
+    .title {
+        color: black;
+        padding: 0px;
+        margin: 0px;
+        margin-bottom: 1vw;
+        font-size: 1.5vw;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        padding: 2em;
+        border-radius: 2vw;
+    }
+
+    input {
+        color: black;
     }
 </style>
