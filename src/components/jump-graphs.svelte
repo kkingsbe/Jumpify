@@ -3,12 +3,14 @@
     import Altgraph from "./altgraph.svelte"
     import VSGraph from "./VSGraph.svelte"
     import HSGraph from "./HSGraph.svelte"
+    import DisplacementGraph from "./DisplacementGraph.svelte"
 </script>
 
 <graphs>
     <Altgraph bind:jump={jump}></Altgraph>
     <VSGraph bind:jump={jump}></VSGraph>
     <HSGraph bind:jump={jump}></HSGraph>
+    <DisplacementGraph bind:jump={jump}></DisplacementGraph>
 </graphs>
 
 <style>

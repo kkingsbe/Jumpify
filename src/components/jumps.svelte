@@ -3,6 +3,7 @@
     import ModeSelect from "./display-mode-select.svelte"
     import JumpGraphs from "./jump-graphs.svelte"
     import GroundTrack from "./groundtrack.svelte"
+    import Track3D from "./track3d.svelte"
     
     var selectedMode = "graphs"
 
@@ -41,6 +42,9 @@
     {/if}
     {#if selectedMode == "ground track"}
         <GroundTrack bind:jump={selectedData}></GroundTrack>
+    {/if}
+    {#if selectedMode == "track 3d"}
+        <Track3D bind:jump={selectedData}></Track3D>
     {/if}
 </jumps>
 

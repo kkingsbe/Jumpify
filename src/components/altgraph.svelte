@@ -26,7 +26,7 @@
                 seconds -= startSec
             }
 
-            labels.push(seconds)
+            labels.push(Math.round(seconds))
             datapoints.push(point.alt)
         })
         //console.log(labels)

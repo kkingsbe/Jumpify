@@ -4,14 +4,20 @@
 
     var jumpDates = [];
     export let selectedJump;
+    let selectedDate
+
+    $: if(typeof(selectedDate) !== 'undefined') selectedJump = selectedDate.toString()
 
     db.loadDatabase(function(err) {
         if(err) alert(err)
         db.find({}, {date: 1}, function(err, docs) {
             if(err) alert(err)
             else {
-                jumpDates = docs;
-                //console.log(jumpDates)
+                jumpDates = [];
+                for(let i = 0; i < docs.length; i++) {
+                    jumpDates.push(new Date(docs[i].date))
+                }
+                jumpDates.sort().reverse()
             }
         })
     })
@@ -19,10 +25,10 @@
 </script>
 
 <selector>
-    <select bind:value={selectedJump}>
+    <select bind:value={selectedDate}>
         <option>Select Jump:</option>
         {#each jumpDates as date}
-        <option>{date.date}</option>
+        <option>{date}</option>
         {/each}
     </select>
 </selector>

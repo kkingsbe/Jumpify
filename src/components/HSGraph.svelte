@@ -29,7 +29,7 @@
             }
             
             
-            labels.push(seconds)
+            labels.push(Math.round(seconds))
             datapoints.push(point.speedKnots)
         })
         //console.log(labels)

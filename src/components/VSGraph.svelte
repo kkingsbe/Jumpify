@@ -48,7 +48,7 @@
                 vs = dz/dt
             }
             //console.log(dt)
-            labels.push(seconds)
+            labels.push(Math.round(seconds))
             datapoints.push(vs)
         })
         //console.log(labels)

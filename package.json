@@ -54,7 +54,8 @@
     "nmea": "^0.1.2",
     "ol": "^6.9.0",
     "sirv-cli": "^0.4.4",
-    "svelte-chartjs": "^1.1.0"
+    "svelte-chartjs": "^1.1.0",
+    "three": "^0.133.1"
   },
   "devDependencies": {
     "@carbon/charts-svelte": "^0.50.7",
