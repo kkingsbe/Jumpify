@@ -46,8 +46,10 @@
   },
   "dependencies": {
     "chart.js": "^3.5.1",
+    "dms-to-decimal": "0.0.6",
     "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
+    "leaflet": "^1.7.1",
     "nedb": "^1.8.0",
     "nmea": "^0.1.2",
     "ol": "^6.9.0",

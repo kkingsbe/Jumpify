@@ -58,13 +58,13 @@
                         date = dt.toString()
                     }
 
+                    //console.log(parsedData)
                     if(typeof(parsed) !== "undefined" && parsed.sentence == "GGA") {
                         parsedData.push(parsed)
                     }
-
                     if(typeof(parsed) !== "undefined" && parsed.sentence == "RMC") {
-                        console.log(parsed.speedKnots)
-                        parsedData[parsedData.length-1].speedKnots = parsed.speedKnots
+                        //console.log(parsed.speedKnots)
+                        if(parsedData.length > 0) parsedData[parsedData.length-1].speedKnots = parsed.speedKnots
                     }
                 })
 

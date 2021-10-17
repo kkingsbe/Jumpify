@@ -40,7 +40,7 @@
         <JumpGraphs jump={selectedData}></JumpGraphs>
     {/if}
     {#if selectedMode == "ground track"}
-        <GroundTrack jump={selectedData}></GroundTrack>
+        <GroundTrack bind:jump={selectedData}></GroundTrack>
     {/if}
 </jumps>
 
