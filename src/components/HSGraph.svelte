@@ -30,7 +30,7 @@
             
             
             labels.push(Math.round(seconds))
-            datapoints.push(point.speedKnots)
+            datapoints.push(point.speedKnots*1.151) //Knots to mph
         })
         //console.log(labels)
         //console.log(datapoints)
@@ -39,7 +39,7 @@
             labels: labels,
             datasets: [
                 {
-                    label: "Lateral Speed (Kts) Over Time",
+                    label: "Lateral Speed (mph) Over Time",
                     data: datapoints,
                     fill: true,
                     backgroundColor: "rgba(237, 199, 59, 0.2)",

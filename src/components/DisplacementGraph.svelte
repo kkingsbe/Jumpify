@@ -30,7 +30,7 @@
             }
 
             labels.push(Math.round(seconds))
-            datapoints.push(displacement)
+            datapoints.push(displacement * 3.281) //Meters to ft
         }
         //console.log(labels)
         //console.log(datapoints)
@@ -39,7 +39,7 @@
             labels: labels,
             datasets: [
                 {
-                    label: "Lateral Displacement (m) over time",
+                    label: "Lateral Displacement (ft) over time",
                     data: datapoints,
                     fill: true,
                     backgroundColor: "rgba(59, 237, 133, 0.2)",

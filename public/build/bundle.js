@@ -15548,7 +15548,7 @@ var app = (function () {
     			div = element("div");
     			create_component(line.$$.fragment);
     			attr_dev(div, "class", "container svelte-1tu9c7y");
-    			add_location(div, file$a, 52, 4, 1511);
+    			add_location(div, file$a, 52, 4, 1537);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15595,7 +15595,7 @@ var app = (function () {
     		c: function create() {
     			graph = element("graph");
     			if (if_block) if_block.c();
-    			add_location(graph, file$a, 50, 0, 1458);
+    			add_location(graph, file$a, 50, 0, 1484);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15713,7 +15713,7 @@ var app = (function () {
     					}
 
     					labels.push(Math.round(seconds));
-    					datapoints.push(point.alt);
+    					datapoints.push(point.alt * 3.28084); //Meters to ft
     				});
 
     				//console.log(labels)
@@ -15721,7 +15721,7 @@ var app = (function () {
     					labels,
     					datasets: [
     						{
-    							label: "Altitude (m) over time",
+    							label: "Altitude (ft) over time",
     							data: datapoints,
     							fill: true,
     							backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -15785,7 +15785,7 @@ var app = (function () {
     			div = element("div");
     			create_component(line.$$.fragment);
     			attr_dev(div, "class", "container svelte-1tu9c7y");
-    			add_location(div, file$b, 75, 4, 2137);
+    			add_location(div, file$b, 75, 4, 2158);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15832,7 +15832,7 @@ var app = (function () {
     		c: function create() {
     			graph = element("graph");
     			if (if_block) if_block.c();
-    			add_location(graph, file$b, 73, 0, 2084);
+    			add_location(graph, file$b, 73, 0, 2105);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -15973,7 +15973,7 @@ var app = (function () {
     					//console.log(dt)
     					labels.push(Math.round(seconds));
 
-    					datapoints.push(vs);
+    					datapoints.push(vs * 2.237); //M/S to Mph
     				});
 
     				//console.log(labels)
@@ -15982,7 +15982,7 @@ var app = (function () {
     					labels,
     					datasets: [
     						{
-    							label: "Vertical Speed (m/s) over time",
+    							label: "Vertical Speed (mph) over time",
     							data: datapoints,
     							fill: true,
     							backgroundColor: "rgba(130, 99, 255, 0.2)",
@@ -16046,7 +16046,7 @@ var app = (function () {
     			div = element("div");
     			create_component(line.$$.fragment);
     			attr_dev(div, "class", "container svelte-1tu9c7y");
-    			add_location(div, file$c, 56, 4, 1612);
+    			add_location(div, file$c, 56, 4, 1633);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -16093,7 +16093,7 @@ var app = (function () {
     		c: function create() {
     			graph = element("graph");
     			if (if_block) if_block.c();
-    			add_location(graph, file$c, 54, 0, 1559);
+    			add_location(graph, file$c, 54, 0, 1580);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16209,7 +16209,7 @@ var app = (function () {
     					}
 
     					labels.push(Math.round(seconds));
-    					datapoints.push(point.speedKnots);
+    					datapoints.push(point.speedKnots * 1.151); //Knots to mph
     				});
 
     				//console.log(labels)
@@ -16218,7 +16218,7 @@ var app = (function () {
     					labels,
     					datasets: [
     						{
-    							label: "Lateral Speed (Kts) Over Time",
+    							label: "Lateral Speed (mph) Over Time",
     							data: datapoints,
     							fill: true,
     							backgroundColor: "rgba(237, 199, 59, 0.2)",
@@ -16282,7 +16282,7 @@ var app = (function () {
     			div = element("div");
     			create_component(line.$$.fragment);
     			attr_dev(div, "class", "container svelte-1tu9c7y");
-    			add_location(div, file$d, 108, 4, 3810);
+    			add_location(div, file$d, 108, 4, 3834);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -16329,7 +16329,7 @@ var app = (function () {
     		c: function create() {
     			graph = element("graph");
     			if (if_block) if_block.c();
-    			add_location(graph, file$d, 106, 0, 3757);
+    			add_location(graph, file$d, 106, 0, 3781);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16501,7 +16501,7 @@ var app = (function () {
     					}
 
     					labels.push(Math.round(seconds));
-    					datapoints.push(displacement);
+    					datapoints.push(displacement * 3.281); //Meters to ft
     				}
 
     				//console.log(labels)
@@ -16510,7 +16510,7 @@ var app = (function () {
     					labels,
     					datasets: [
     						{
-    							label: "Lateral Displacement (m) over time",
+    							label: "Lateral Displacement (ft) over time",
     							data: datapoints,
     							fill: true,
     							backgroundColor: "rgba(59, 237, 133, 0.2)",
@@ -16556,10 +16556,281 @@ var app = (function () {
     	}
     }
 
-    /* src\components\jump-graphs.svelte generated by Svelte v3.19.1 */
-    const file$e = "src\\components\\jump-graphs.svelte";
+    /* src\components\SpeedGraph.svelte generated by Svelte v3.19.1 */
+    const file$e = "src\\components\\SpeedGraph.svelte";
+
+    // (82:4) {#if typeof(jump) !== "undefined"}
+    function create_if_block$5(ctx) {
+    	let div;
+    	let current;
+
+    	const line = new Line({
+    			props: { data: /*chartData*/ ctx[1] },
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			create_component(line.$$.fragment);
+    			attr_dev(div, "class", "container svelte-1tu9c7y");
+    			add_location(div, file$e, 82, 4, 2406);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(line, div, null);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const line_changes = {};
+    			if (dirty & /*chartData*/ 2) line_changes.data = /*chartData*/ ctx[1];
+    			line.$set(line_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(line.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(line.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(line);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$5.name,
+    		type: "if",
+    		source: "(82:4) {#if typeof(jump) !== \\\"undefined\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
 
     function create_fragment$f(ctx) {
+    	let graph;
+    	let current;
+    	let if_block = typeof /*jump*/ ctx[0] !== "undefined" && create_if_block$5(ctx);
+
+    	const block = {
+    		c: function create() {
+    			graph = element("graph");
+    			if (if_block) if_block.c();
+    			add_location(graph, file$e, 80, 0, 2353);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, graph, anchor);
+    			if (if_block) if_block.m(graph, null);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (typeof /*jump*/ ctx[0] !== "undefined") {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    					transition_in(if_block, 1);
+    				} else {
+    					if_block = create_if_block$5(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(graph, null);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(graph);
+    			if (if_block) if_block.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$f.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$f($$self, $$props, $$invalidate) {
+    	let { jump } = $$props;
+    	var labels = [];
+    	var vertS = [];
+    	var ls = [];
+    	var datapoints = [];
+    	var chartData;
+    	const writable_props = ["jump"];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<SpeedGraph> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		Line,
+    		jump,
+    		labels,
+    		vertS,
+    		ls,
+    		datapoints,
+    		chartData,
+    		Math
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("jump" in $$props) $$invalidate(0, jump = $$props.jump);
+    		if ("labels" in $$props) $$invalidate(2, labels = $$props.labels);
+    		if ("vertS" in $$props) $$invalidate(3, vertS = $$props.vertS);
+    		if ("ls" in $$props) $$invalidate(4, ls = $$props.ls);
+    		if ("datapoints" in $$props) $$invalidate(5, datapoints = $$props.datapoints);
+    		if ("chartData" in $$props) $$invalidate(1, chartData = $$props.chartData);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*jump, labels, ls, vertS, datapoints*/ 61) {
+    			 if (typeof jump !== "undefined") {
+    				//console.log(jump)
+    				let startSec;
+
+    				$$invalidate(2, labels = []);
+    				$$invalidate(5, datapoints = []);
+    				$$invalidate(3, vertS = []);
+    				$$invalidate(4, ls = []);
+    				let lastAlt = -999;
+    				let lastTime = -1;
+
+    				jump.forEach(point => {
+    					let h = point.timestamp.substring(0, 2);
+    					let min = point.timestamp.substring(2, 4);
+    					let sec = point.timestamp.substring(4);
+    					let a = [h, min, sec];
+    					let seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+    					let vs;
+    					let dz;
+    					let dt;
+
+    					if (typeof startSec == "undefined") {
+    						startSec = seconds;
+    						seconds = 0;
+    					} else {
+    						seconds -= startSec;
+    					}
+
+    					if (lastAlt == -999) {
+    						lastAlt = point.alt;
+    						dz = 0;
+    					} else {
+    						dz = lastAlt - point.alt;
+    						lastAlt = point.alt;
+    					}
+
+    					if (lastTime == -1) {
+    						vs = 0;
+    						dt = 0;
+    						lastTime = seconds;
+    					} else {
+    						dt = seconds - lastTime;
+    						lastTime = seconds;
+    						vs = dz / dt;
+    					}
+
+    					labels.push(Math.round(seconds));
+    					ls.push(point.speedKnots / 1.944); //knots to m/s
+    					vertS.push(vs);
+    					datapoints.push(Math.sqrt((point.speedKnots / 1.944) ** 2 + vs ** 2) * 2.237); //Norm and convert m/s to mph
+    				});
+
+    				//console.log(labels)
+    				//console.log(datapoints)
+    				//console.log(vertS)
+    				//console.log(ls)
+    				$$invalidate(1, chartData = {
+    					labels,
+    					datasets: [
+    						{
+    							label: "Total Speed (mph) over time",
+    							data: datapoints,
+    							fill: true,
+    							backgroundColor: "rgba(255, 99, 216, 0.2)",
+    							borderColor: "rgba(255, 99, 216, 1)",
+    							cubicInterpolationMode: "monotone",
+    							tension: 0.4
+    						}
+    					]
+    				});
+    			}
+    		}
+    	};
+
+    	return [jump, chartData];
+    }
+
+    class SpeedGraph extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$f, create_fragment$f, safe_not_equal, { jump: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "SpeedGraph",
+    			options,
+    			id: create_fragment$f.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*jump*/ ctx[0] === undefined && !("jump" in props)) {
+    			console.warn("<SpeedGraph> was created without expected prop 'jump'");
+    		}
+    	}
+
+    	get jump() {
+    		throw new Error("<SpeedGraph>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set jump(value) {
+    		throw new Error("<SpeedGraph>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\components\jump-graphs.svelte generated by Svelte v3.19.1 */
+    const file$f = "src\\components\\jump-graphs.svelte";
+
+    function create_fragment$g(ctx) {
     	let graphs;
     	let updating_jump;
     	let t0;
@@ -16568,10 +16839,25 @@ var app = (function () {
     	let updating_jump_2;
     	let t2;
     	let updating_jump_3;
+    	let t3;
+    	let updating_jump_4;
     	let current;
 
+    	function speedgraph_jump_binding(value) {
+    		/*speedgraph_jump_binding*/ ctx[1].call(null, value);
+    	}
+
+    	let speedgraph_props = {};
+
+    	if (/*jump*/ ctx[0] !== void 0) {
+    		speedgraph_props.jump = /*jump*/ ctx[0];
+    	}
+
+    	const speedgraph = new SpeedGraph({ props: speedgraph_props, $$inline: true });
+    	binding_callbacks.push(() => bind(speedgraph, "jump", speedgraph_jump_binding));
+
     	function altgraph_jump_binding(value) {
-    		/*altgraph_jump_binding*/ ctx[1].call(null, value);
+    		/*altgraph_jump_binding*/ ctx[2].call(null, value);
     	}
 
     	let altgraph_props = {};
@@ -16584,7 +16870,7 @@ var app = (function () {
     	binding_callbacks.push(() => bind(altgraph, "jump", altgraph_jump_binding));
 
     	function vsgraph_jump_binding(value) {
-    		/*vsgraph_jump_binding*/ ctx[2].call(null, value);
+    		/*vsgraph_jump_binding*/ ctx[3].call(null, value);
     	}
 
     	let vsgraph_props = {};
@@ -16597,7 +16883,7 @@ var app = (function () {
     	binding_callbacks.push(() => bind(vsgraph, "jump", vsgraph_jump_binding));
 
     	function hsgraph_jump_binding(value) {
-    		/*hsgraph_jump_binding*/ ctx[3].call(null, value);
+    		/*hsgraph_jump_binding*/ ctx[4].call(null, value);
     	}
 
     	let hsgraph_props = {};
@@ -16610,7 +16896,7 @@ var app = (function () {
     	binding_callbacks.push(() => bind(hsgraph, "jump", hsgraph_jump_binding));
 
     	function displacementgraph_jump_binding(value) {
-    		/*displacementgraph_jump_binding*/ ctx[4].call(null, value);
+    		/*displacementgraph_jump_binding*/ ctx[5].call(null, value);
     	}
 
     	let displacementgraph_props = {};
@@ -16629,70 +16915,84 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			graphs = element("graphs");
-    			create_component(altgraph.$$.fragment);
+    			create_component(speedgraph.$$.fragment);
     			t0 = space();
-    			create_component(vsgraph.$$.fragment);
+    			create_component(altgraph.$$.fragment);
     			t1 = space();
-    			create_component(hsgraph.$$.fragment);
+    			create_component(vsgraph.$$.fragment);
     			t2 = space();
+    			create_component(hsgraph.$$.fragment);
+    			t3 = space();
     			create_component(displacementgraph.$$.fragment);
     			attr_dev(graphs, "class", "svelte-1lytcml");
-    			add_location(graphs, file$e, 8, 0, 242);
+    			add_location(graphs, file$f, 9, 0, 292);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, graphs, anchor);
-    			mount_component(altgraph, graphs, null);
+    			mount_component(speedgraph, graphs, null);
     			append_dev(graphs, t0);
-    			mount_component(vsgraph, graphs, null);
+    			mount_component(altgraph, graphs, null);
     			append_dev(graphs, t1);
-    			mount_component(hsgraph, graphs, null);
+    			mount_component(vsgraph, graphs, null);
     			append_dev(graphs, t2);
+    			mount_component(hsgraph, graphs, null);
+    			append_dev(graphs, t3);
     			mount_component(displacementgraph, graphs, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			const altgraph_changes = {};
+    			const speedgraph_changes = {};
 
     			if (!updating_jump && dirty & /*jump*/ 1) {
     				updating_jump = true;
-    				altgraph_changes.jump = /*jump*/ ctx[0];
+    				speedgraph_changes.jump = /*jump*/ ctx[0];
     				add_flush_callback(() => updating_jump = false);
+    			}
+
+    			speedgraph.$set(speedgraph_changes);
+    			const altgraph_changes = {};
+
+    			if (!updating_jump_1 && dirty & /*jump*/ 1) {
+    				updating_jump_1 = true;
+    				altgraph_changes.jump = /*jump*/ ctx[0];
+    				add_flush_callback(() => updating_jump_1 = false);
     			}
 
     			altgraph.$set(altgraph_changes);
     			const vsgraph_changes = {};
 
-    			if (!updating_jump_1 && dirty & /*jump*/ 1) {
-    				updating_jump_1 = true;
+    			if (!updating_jump_2 && dirty & /*jump*/ 1) {
+    				updating_jump_2 = true;
     				vsgraph_changes.jump = /*jump*/ ctx[0];
-    				add_flush_callback(() => updating_jump_1 = false);
+    				add_flush_callback(() => updating_jump_2 = false);
     			}
 
     			vsgraph.$set(vsgraph_changes);
     			const hsgraph_changes = {};
 
-    			if (!updating_jump_2 && dirty & /*jump*/ 1) {
-    				updating_jump_2 = true;
+    			if (!updating_jump_3 && dirty & /*jump*/ 1) {
+    				updating_jump_3 = true;
     				hsgraph_changes.jump = /*jump*/ ctx[0];
-    				add_flush_callback(() => updating_jump_2 = false);
+    				add_flush_callback(() => updating_jump_3 = false);
     			}
 
     			hsgraph.$set(hsgraph_changes);
     			const displacementgraph_changes = {};
 
-    			if (!updating_jump_3 && dirty & /*jump*/ 1) {
-    				updating_jump_3 = true;
+    			if (!updating_jump_4 && dirty & /*jump*/ 1) {
+    				updating_jump_4 = true;
     				displacementgraph_changes.jump = /*jump*/ ctx[0];
-    				add_flush_callback(() => updating_jump_3 = false);
+    				add_flush_callback(() => updating_jump_4 = false);
     			}
 
     			displacementgraph.$set(displacementgraph_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(speedgraph.$$.fragment, local);
     			transition_in(altgraph.$$.fragment, local);
     			transition_in(vsgraph.$$.fragment, local);
     			transition_in(hsgraph.$$.fragment, local);
@@ -16700,6 +17000,7 @@ var app = (function () {
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(speedgraph.$$.fragment, local);
     			transition_out(altgraph.$$.fragment, local);
     			transition_out(vsgraph.$$.fragment, local);
     			transition_out(hsgraph.$$.fragment, local);
@@ -16708,6 +17009,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(graphs);
+    			destroy_component(speedgraph);
     			destroy_component(altgraph);
     			destroy_component(vsgraph);
     			destroy_component(hsgraph);
@@ -16717,7 +17019,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$f.name,
+    		id: create_fragment$g.name,
     		type: "component",
     		source: "",
     		ctx
@@ -16726,13 +17028,18 @@ var app = (function () {
     	return block;
     }
 
-    function instance$f($$self, $$props, $$invalidate) {
+    function instance$g($$self, $$props, $$invalidate) {
     	let { jump } = $$props;
     	const writable_props = ["jump"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Jump_graphs> was created with unknown prop '${key}'`);
     	});
+
+    	function speedgraph_jump_binding(value) {
+    		jump = value;
+    		$$invalidate(0, jump);
+    	}
 
     	function altgraph_jump_binding(value) {
     		jump = value;
@@ -16763,7 +17070,8 @@ var app = (function () {
     		Altgraph,
     		VSGraph,
     		HSGraph,
-    		DisplacementGraph
+    		DisplacementGraph,
+    		SpeedGraph
     	});
 
     	$$self.$inject_state = $$props => {
@@ -16776,6 +17084,7 @@ var app = (function () {
 
     	return [
     		jump,
+    		speedgraph_jump_binding,
     		altgraph_jump_binding,
     		vsgraph_jump_binding,
     		hsgraph_jump_binding,
@@ -16786,13 +17095,13 @@ var app = (function () {
     class Jump_graphs extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$f, create_fragment$f, safe_not_equal, { jump: 0 });
+    		init(this, options, instance$g, create_fragment$g, safe_not_equal, { jump: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Jump_graphs",
     			options,
-    			id: create_fragment$f.name
+    			id: create_fragment$g.name
     		});
 
     		const { ctx } = this.$$;
@@ -30916,9 +31225,9 @@ var app = (function () {
     /* src\components\groundtrack.svelte generated by Svelte v3.19.1 */
 
     const { console: console_1$2 } = globals;
-    const file$f = "src\\components\\groundtrack.svelte";
+    const file$g = "src\\components\\groundtrack.svelte";
 
-    function create_fragment$g(ctx) {
+    function create_fragment$h(ctx) {
     	let link;
     	let t;
     	let groundtrack;
@@ -30934,12 +31243,12 @@ var app = (function () {
     			attr_dev(link, "href", "https://unpkg.com/leaflet@1.4.0/dist/leaflet.css");
     			attr_dev(link, "integrity", "sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==");
     			attr_dev(link, "crossorigin", "");
-    			add_location(link, file$f, 1, 4, 19);
+    			add_location(link, file$g, 1, 4, 19);
     			attr_dev(div, "id", "map");
     			attr_dev(div, "class", "map svelte-4f4g60");
-    			add_location(div, file$f, 89, 4, 2833);
+    			add_location(div, file$g, 89, 4, 2833);
     			attr_dev(groundtrack, "class", "svelte-4f4g60");
-    			add_location(groundtrack, file$f, 88, 0, 2814);
+    			add_location(groundtrack, file$g, 88, 0, 2814);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30962,7 +31271,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$g.name,
+    		id: create_fragment$h.name,
     		type: "component",
     		source: "",
     		ctx
@@ -30981,7 +31290,7 @@ var app = (function () {
     	return dd;
     }
 
-    function instance$g($$self, $$props, $$invalidate) {
+    function instance$h($$self, $$props, $$invalidate) {
     	let { jump } = $$props;
 
     	//$:console.log(jump)
@@ -31088,13 +31397,13 @@ var app = (function () {
     class Groundtrack extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$g, create_fragment$g, safe_not_equal, { jump: 0 });
+    		init(this, options, instance$h, create_fragment$h, safe_not_equal, { jump: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Groundtrack",
     			options,
-    			id: create_fragment$g.name
+    			id: create_fragment$h.name
     		});
 
     		const { ctx } = this.$$;
@@ -75360,9 +75669,9 @@ var app = (function () {
     /* src\components\track3d.svelte generated by Svelte v3.19.1 */
 
     const { console: console_1$3, window: window_1 } = globals;
-    const file$g = "src\\components\\track3d.svelte";
+    const file$h = "src\\components\\track3d.svelte";
 
-    function create_fragment$h(ctx) {
+    function create_fragment$i(ctx) {
     	let track3d;
     	let div;
     	let dispose;
@@ -75373,9 +75682,9 @@ var app = (function () {
     			div = element("div");
     			attr_dev(div, "id", "container");
     			attr_dev(div, "class", "container svelte-ajdzp");
-    			add_location(div, file$g, 183, 4, 6404);
+    			add_location(div, file$h, 183, 4, 6404);
     			attr_dev(track3d, "class", "svelte-ajdzp");
-    			add_location(track3d, file$g, 182, 0, 6389);
+    			add_location(track3d, file$h, 182, 0, 6389);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -75396,7 +75705,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$h.name,
+    		id: create_fragment$i.name,
     		type: "component",
     		source: "",
     		ctx
@@ -75433,7 +75742,7 @@ var app = (function () {
     	}
     }
 
-    function instance$h($$self, $$props, $$invalidate) {
+    function instance$i($$self, $$props, $$invalidate) {
     	let { jump } = $$props;
     	var THREE = require("three");
     	var width;
@@ -75660,13 +75969,13 @@ var app = (function () {
     class Track3d extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$h, create_fragment$h, safe_not_equal, { jump: 1 });
+    		init(this, options, instance$i, create_fragment$i, safe_not_equal, { jump: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Track3d",
     			options,
-    			id: create_fragment$h.name
+    			id: create_fragment$i.name
     		});
 
     		const { ctx } = this.$$;
@@ -75687,7 +75996,7 @@ var app = (function () {
     }
 
     /* src\components\jumps.svelte generated by Svelte v3.19.1 */
-    const file$h = "src\\components\\jumps.svelte";
+    const file$i = "src\\components\\jumps.svelte";
 
     // (40:4) {#if selectedMode == "graphs"}
     function create_if_block_2(ctx) {
@@ -75799,7 +76108,7 @@ var app = (function () {
     }
 
     // (46:4) {#if selectedMode == "track 3d"}
-    function create_if_block$5(ctx) {
+    function create_if_block$6(ctx) {
     	let updating_jump;
     	let current;
 
@@ -75851,7 +76160,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$5.name,
+    		id: create_if_block$6.name,
     		type: "if",
     		source: "(46:4) {#if selectedMode == \\\"track 3d\\\"}",
     		ctx
@@ -75860,7 +76169,7 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$i(ctx) {
+    function create_fragment$j(ctx) {
     	let jumps;
     	let updating_selectedJump;
     	let t0;
@@ -75901,7 +76210,7 @@ var app = (function () {
     	binding_callbacks.push(() => bind(modeselect, "selectedMode", modeselect_selectedMode_binding));
     	let if_block0 = /*selectedMode*/ ctx[0] == "graphs" && create_if_block_2(ctx);
     	let if_block1 = /*selectedMode*/ ctx[0] == "ground track" && create_if_block_1$1(ctx);
-    	let if_block2 = /*selectedMode*/ ctx[0] == "track 3d" && create_if_block$5(ctx);
+    	let if_block2 = /*selectedMode*/ ctx[0] == "track 3d" && create_if_block$6(ctx);
 
     	const block = {
     		c: function create() {
@@ -75916,7 +76225,7 @@ var app = (function () {
     			t3 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(jumps, "class", "svelte-gk3a5v");
-    			add_location(jumps, file$h, 36, 0, 1035);
+    			add_location(jumps, file$i, 36, 0, 1035);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -75999,7 +76308,7 @@ var app = (function () {
     					if_block2.p(ctx, dirty);
     					transition_in(if_block2, 1);
     				} else {
-    					if_block2 = create_if_block$5(ctx);
+    					if_block2 = create_if_block$6(ctx);
     					if_block2.c();
     					transition_in(if_block2, 1);
     					if_block2.m(jumps, null);
@@ -76043,7 +76352,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$i.name,
+    		id: create_fragment$j.name,
     		type: "component",
     		source: "",
     		ctx
@@ -76052,7 +76361,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$i($$self, $$props, $$invalidate) {
+    function instance$j($$self, $$props, $$invalidate) {
     	var selectedMode = "graphs";
     	var Datastore = require("nedb");
     	var db = new Datastore("C:/Program Files/Jumpify/jumps.db");
@@ -76154,22 +76463,22 @@ var app = (function () {
     class Jumps extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$i, create_fragment$i, safe_not_equal, {});
+    		init(this, options, instance$j, create_fragment$j, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Jumps",
     			options,
-    			id: create_fragment$i.name
+    			id: create_fragment$j.name
     		});
     	}
     }
 
     /* src\components\import.svelte generated by Svelte v3.19.1 */
 
-    const file$i = "src\\components\\import.svelte";
+    const file$j = "src\\components\\import.svelte";
 
-    function create_fragment$j(ctx) {
+    function create_fragment$k(ctx) {
     	let import_1;
     	let div1;
     	let p0;
@@ -76193,19 +76502,19 @@ var app = (function () {
     			p1 = element("p");
     			p1.textContent = "Import!";
     			attr_dev(p0, "class", "title svelte-csggiu");
-    			add_location(p0, file$i, 110, 8, 4090);
+    			add_location(p0, file$j, 110, 8, 4090);
     			attr_dev(input_1, "id", "fileselector");
     			attr_dev(input_1, "type", "file");
     			attr_dev(input_1, "class", "svelte-csggiu");
-    			add_location(input_1, file$i, 111, 8, 4133);
+    			add_location(input_1, file$j, 111, 8, 4133);
     			attr_dev(p1, "class", "svelte-csggiu");
-    			add_location(p1, file$i, 113, 12, 4263);
+    			add_location(p1, file$j, 113, 12, 4263);
     			attr_dev(div0, "class", "btn svelte-csggiu");
-    			add_location(div0, file$i, 112, 8, 4209);
+    			add_location(div0, file$j, 112, 8, 4209);
     			attr_dev(div1, "class", "card svelte-csggiu");
-    			add_location(div1, file$i, 109, 4, 4062);
+    			add_location(div1, file$j, 109, 4, 4062);
     			attr_dev(import_1, "class", "svelte-csggiu");
-    			add_location(import_1, file$i, 108, 0, 4048);
+    			add_location(import_1, file$j, 108, 0, 4048);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -76238,7 +76547,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$j.name,
+    		id: create_fragment$k.name,
     		type: "component",
     		source: "",
     		ctx
@@ -76247,7 +76556,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$j($$self, $$props, $$invalidate) {
+    function instance$k($$self, $$props, $$invalidate) {
     	var fs = require("fs"); // Load the File System to execute our common tasks (CRUD)
     	var nmea = require("nmea");
     	var Datastore = require("nedb");
@@ -76424,19 +76733,19 @@ var app = (function () {
     class Import extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$j, create_fragment$j, safe_not_equal, {});
+    		init(this, options, instance$k, create_fragment$k, safe_not_equal, {});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Import",
     			options,
-    			id: create_fragment$j.name
+    			id: create_fragment$k.name
     		});
     	}
     }
 
     /* src\App.svelte generated by Svelte v3.19.1 */
-    const file$j = "src\\App.svelte";
+    const file$k = "src\\App.svelte";
 
     // (12:1) {#if page == 1}
     function create_if_block_2$1(ctx) {
@@ -76515,7 +76824,7 @@ var app = (function () {
     }
 
     // (18:1) {#if page == 3}
-    function create_if_block$6(ctx) {
+    function create_if_block$7(ctx) {
     	let current;
     	const import_1 = new Import({ $$inline: true });
 
@@ -76543,7 +76852,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$6.name,
+    		id: create_if_block$7.name,
     		type: "if",
     		source: "(18:1) {#if page == 3}",
     		ctx
@@ -76552,7 +76861,7 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$k(ctx) {
+    function create_fragment$l(ctx) {
     	let main;
     	let updating_page;
     	let t0;
@@ -76574,7 +76883,7 @@ var app = (function () {
     	binding_callbacks.push(() => bind(sidebar, "page", sidebar_page_binding));
     	let if_block0 = /*page*/ ctx[0] == 1 && create_if_block_2$1(ctx);
     	let if_block1 = /*page*/ ctx[0] == 2 && create_if_block_1$2(ctx);
-    	let if_block2 = /*page*/ ctx[0] == 3 && create_if_block$6(ctx);
+    	let if_block2 = /*page*/ ctx[0] == 3 && create_if_block$7(ctx);
 
     	const block = {
     		c: function create() {
@@ -76587,7 +76896,7 @@ var app = (function () {
     			t2 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(main, "class", "svelte-16v96kd");
-    			add_location(main, file$j, 9, 0, 254);
+    			add_location(main, file$k, 9, 0, 254);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -76654,7 +76963,7 @@ var app = (function () {
 
     			if (/*page*/ ctx[0] == 3) {
     				if (!if_block2) {
-    					if_block2 = create_if_block$6(ctx);
+    					if_block2 = create_if_block$7(ctx);
     					if_block2.c();
     					transition_in(if_block2, 1);
     					if_block2.m(main, null);
@@ -76697,7 +77006,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$k.name,
+    		id: create_fragment$l.name,
     		type: "component",
     		source: "",
     		ctx
@@ -76706,7 +77015,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$k($$self, $$props, $$invalidate) {
+    function instance$l($$self, $$props, $$invalidate) {
     	let { name } = $$props;
     	var page = 2;
     	const writable_props = ["name"];
@@ -76741,13 +77050,13 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$k, create_fragment$k, safe_not_equal, { name: 1 });
+    		init(this, options, instance$l, create_fragment$l, safe_not_equal, { name: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "App",
     			options,
-    			id: create_fragment$k.name
+    			id: create_fragment$l.name
     		});
 
     		const { ctx } = this.$$;

@@ -49,7 +49,7 @@
             }
             //console.log(dt)
             labels.push(Math.round(seconds))
-            datapoints.push(vs)
+            datapoints.push(vs * 2.237) //M/S to Mph
         })
         //console.log(labels)
         //console.log(datapoints)
@@ -58,7 +58,7 @@
             labels: labels,
             datasets: [
                 {
-                    label: "Vertical Speed (m/s) over time",
+                    label: "Vertical Speed (mph) over time",
                     data: datapoints,
                     fill: true,
                     backgroundColor: "rgba(130, 99, 255, 0.2)",
