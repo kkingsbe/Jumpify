@@ -1,31 +1,55 @@
 <script>
     export let jump
     import {onMount} from 'svelte'
-	import { Viewer, Cesium } from 'cesium';
+	var Cesium = require("cesium")
 	import '../../node_modules/cesium/Build/Cesium/Widgets/widgets.css'
 
     let viewer
     var mounted = false
-    //Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NTY2ODJlYi03Yjk4LTQyNzctYTViNC1hOGExNTVlYzAxZGMiLCJpZCI6NzA3NDcsImlhdCI6MTYzNDYxMTk1M30.2wm8m8_BLf6waLA_-AAgrG96edGS2YUvoS3qmFMXj90"
+    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NTY2ODJlYi03Yjk4LTQyNzctYTViNC1hOGExNTVlYzAxZGMiLCJpZCI6NzA3NDcsImlhdCI6MTYzNDYxMTk1M30.2wm8m8_BLf6waLA_-AAgrG96edGS2YUvoS3qmFMXj90"
 
     var datapoints = []
     $: if(typeof(jump) !== "undefined" && mounted) {
+        if(typeof(viewer) !== "undefined") {
+            viewer.entities.removeAll();
+            viewer.destroy();
+        }
         let coords = getDecimalCoords()
         datapoints = []
         let i = 0
         let largestVal = 0
         while(i < coords.length) {
             let coord = coords[i]
-            datapoints.push([coords[0], coords[1], jump[i].alt])
+            datapoints.push(coord[0])
+            datapoints.push(coord[1])
+            datapoints.push(jump[i].alt)
             i++
         }
+
         console.log(datapoints)
+	    window.CESIUM_BASE_URL = './build';
+        mounted = true
+        viewer = new Cesium.Viewer('cesiumContainer', {
+            terrainProvider : Cesium.createWorldTerrain()
+        })
+        var purpleArrow = viewer.entities.add({
+            name: "Purple straight arrow at height",
+            polyline: {
+                positions: Cesium.Cartesian3.fromDegreesArrayHeights(datapoints),
+                width: 10,
+                arcType: Cesium.ArcType.NONE,
+                material: new Cesium.PolylineArrowMaterialProperty(
+                Cesium.Color.PURPLE
+                ),
+            },
+        });
+
+        viewer.zoomTo(viewer.entities);
+        //console.log(datapoints)
     }
 
     onMount(async () => {
-	    window.CESIUM_BASE_URL = './build';
         mounted = true
-        viewer = new Viewer('cesiumContainer')
     })
 
     function getDecimalCoords() {
@@ -50,7 +74,7 @@
             let latDecimal = ConvertDMSToDD(latDeg, latMin, latSec, latPole)
             let lonDecimal = ConvertDMSToDD(lonDeg, lonMin, lonSec, lonPole)
 
-            arr.push([latDecimal, lonDecimal])
+            arr.push([lonDecimal, latDecimal])
 
             //console.log(`Lat: ${latDecimal.toFixed(2)} Lon: ${lonDecimal.toFixed(2)}`)
             //console.log(`LAT: D: ${latDeg} | M: ${latMin} | S: ${latSec}`)
