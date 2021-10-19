@@ -1,4 +1,5 @@
 import svelte from 'rollup-plugin-svelte';
+import postcss from 'rollup-plugin-postcss';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
@@ -37,16 +38,19 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
-		commonjs(),
 
+		postcss({
+			extensions: [ '.css' ]
+		}),
 		copy({
 			targets: [
 				{ src: path.join(cesiumBuildPath, 'Assets'), dest: 'public/build/' },
 				{ src: path.join(cesiumBuildPath, 'ThirdParty'), dest: 'public/build/' },
 				{ src: path.join(cesiumBuildPath, 'Widgets'), dest: 'public/build/' },
 				{ src: path.join(cesiumBuildPath, 'Workers'), dest: 'public/build/' },
-			]
+			],
 		}),
+		commonjs(),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
