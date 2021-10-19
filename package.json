@@ -45,6 +45,8 @@
     }
   },
   "dependencies": {
+    "c137.js": "^1.84.0",
+    "cesium": "^1.86.1",
     "chart.js": "^3.5.1",
     "dms-to-decimal": "0.0.6",
     "electron-reload": "^1.5.0",
@@ -53,6 +55,7 @@
     "nedb": "^1.8.0",
     "nmea": "^0.1.2",
     "ol": "^6.9.0",
+    "path": "^0.12.7",
     "sirv-cli": "^0.4.4",
     "svelte-chartjs": "^1.1.0",
     "three": "^0.133.1"
@@ -70,7 +73,9 @@
     "d3": "^7.1.1",
     "electron": "8.0.2",
     "rollup": "^1.32.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^5.1.2",
     "svelte": "^3.19.1"

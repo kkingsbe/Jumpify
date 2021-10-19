@@ -2,9 +2,12 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
+import copy from 'rollup-plugin-copy';
 import { terser } from 'rollup-plugin-terser';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
+const cesiumBuildPath = 'node_modules/cesium/Build/Cesium'
 
 export default {
 	input: 'src/svelte.js',
@@ -35,6 +38,15 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
+
+		copy({
+			targets: [
+				{ src: path.join(cesiumBuildPath, 'Assets'), dest: 'public/build/' },
+				{ src: path.join(cesiumBuildPath, 'ThirdParty'), dest: 'public/build/' },
+				{ src: path.join(cesiumBuildPath, 'Widgets'), dest: 'public/build/' },
+				{ src: path.join(cesiumBuildPath, 'Workers'), dest: 'public/build/' },
+			]
+		}),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated

@@ -3,7 +3,9 @@
     import ModeSelect from "./display-mode-select.svelte"
     import JumpGraphs from "./jump-graphs.svelte"
     import GroundTrack from "./groundtrack.svelte"
-    import Track3D from "./track3d.svelte"
+    //import Track3D from "./track3d.svelte"
+    import Track3D from "./track3d_cesium.svelte"
+    
     
     var selectedMode = "graphs"
 
