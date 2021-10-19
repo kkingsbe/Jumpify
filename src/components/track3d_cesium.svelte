@@ -1,11 +1,12 @@
 <script>
     export let jump
     import {onMount} from 'svelte'
-	import { Viewer } from 'cesium';
+	import { Viewer, Cesium } from 'cesium';
 	import '../../node_modules/cesium/Build/Cesium/Widgets/widgets.css'
 
     let viewer
     var mounted = false
+    //Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NTY2ODJlYi03Yjk4LTQyNzctYTViNC1hOGExNTVlYzAxZGMiLCJpZCI6NzA3NDcsImlhdCI6MTYzNDYxMTk1M30.2wm8m8_BLf6waLA_-AAgrG96edGS2YUvoS3qmFMXj90"
 
     var datapoints = []
     $: if(typeof(jump) !== "undefined" && mounted) {
