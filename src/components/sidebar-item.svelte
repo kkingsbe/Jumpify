@@ -16,7 +16,6 @@
         <div class="unselected-div"></div>
     {/if}
     <img src={icon}>
-    <p>{text}</p>
 </sidebar-item>
 
 <style>
@@ -42,7 +41,7 @@
     .selected-div {
         height: 100%;
         width: 0.5vw;
-        background: black;
+        background: white;
     }
 
     .unselected-div {

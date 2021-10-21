@@ -492,7 +492,7 @@ var app = (function () {
     			icon = element("icon");
     			img = element("img");
     			if (img.src !== (img_src_value = /*src*/ ctx[0])) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "class", "svelte-1tdqh8n");
+    			attr_dev(img, "class", "svelte-su08qu");
     			add_location(img, file, 5, 4, 56);
     			add_location(icon, file, 4, 0, 44);
     		},
@@ -592,7 +592,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "selected-div svelte-1sn4pgf");
+    			attr_dev(div, "class", "selected-div svelte-1i9w3up");
     			add_location(div, file$1, 12, 8, 242);
     		},
     		m: function mount(target, anchor) {
@@ -621,7 +621,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "unselected-div svelte-1sn4pgf");
+    			attr_dev(div, "class", "unselected-div svelte-1i9w3up");
     			add_location(div, file$1, 15, 8, 316);
     		},
     		m: function mount(target, anchor) {
@@ -649,9 +649,6 @@ var app = (function () {
     	let t1;
     	let img;
     	let img_src_value;
-    	let t2;
-    	let p;
-    	let t3;
     	let dispose;
     	let if_block0 = /*selected*/ ctx[0] && create_if_block_1(ctx);
     	let if_block1 = !/*selected*/ ctx[0] && create_if_block(ctx);
@@ -664,15 +661,10 @@ var app = (function () {
     			if (if_block1) if_block1.c();
     			t1 = space();
     			img = element("img");
-    			t2 = space();
-    			p = element("p");
-    			t3 = text(/*text*/ ctx[2]);
     			if (img.src !== (img_src_value = /*icon*/ ctx[1])) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "class", "svelte-1sn4pgf");
+    			attr_dev(img, "class", "svelte-1i9w3up");
     			add_location(img, file$1, 17, 4, 367);
-    			attr_dev(p, "class", "svelte-1sn4pgf");
-    			add_location(p, file$1, 18, 4, 389);
-    			set_custom_element_data(sidebar_item, "class", "svelte-1sn4pgf");
+    			set_custom_element_data(sidebar_item, "class", "svelte-1i9w3up");
     			add_location(sidebar_item, file$1, 10, 0, 180);
     		},
     		l: function claim(nodes) {
@@ -685,10 +677,7 @@ var app = (function () {
     			if (if_block1) if_block1.m(sidebar_item, null);
     			append_dev(sidebar_item, t1);
     			append_dev(sidebar_item, img);
-    			append_dev(sidebar_item, t2);
-    			append_dev(sidebar_item, p);
-    			append_dev(p, t3);
-    			dispose = listen_dev(sidebar_item, "click", /*select*/ ctx[3], false, false, false);
+    			dispose = listen_dev(sidebar_item, "click", /*select*/ ctx[2], false, false, false);
     		},
     		p: function update(ctx, [dirty]) {
     			if (/*selected*/ ctx[0]) {
@@ -716,8 +705,6 @@ var app = (function () {
     			if (dirty & /*icon*/ 2 && img.src !== (img_src_value = /*icon*/ ctx[1])) {
     				attr_dev(img, "src", img_src_value);
     			}
-
-    			if (dirty & /*text*/ 4) set_data_dev(t3, /*text*/ ctx[2]);
     		},
     		i: noop,
     		o: noop,
@@ -758,7 +745,7 @@ var app = (function () {
     	$$self.$set = $$props => {
     		if ("selected" in $$props) $$invalidate(0, selected = $$props.selected);
     		if ("icon" in $$props) $$invalidate(1, icon = $$props.icon);
-    		if ("text" in $$props) $$invalidate(2, text = $$props.text);
+    		if ("text" in $$props) $$invalidate(3, text = $$props.text);
     	};
 
     	$$self.$capture_state = () => ({ selected, icon, text, select, console });
@@ -766,7 +753,7 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ("selected" in $$props) $$invalidate(0, selected = $$props.selected);
     		if ("icon" in $$props) $$invalidate(1, icon = $$props.icon);
-    		if ("text" in $$props) $$invalidate(2, text = $$props.text);
+    		if ("text" in $$props) $$invalidate(3, text = $$props.text);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -779,13 +766,13 @@ var app = (function () {
     		}
     	};
 
-    	return [selected, icon, text, select];
+    	return [selected, icon, select, text];
     }
 
     class Sidebar_item extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { selected: 0, icon: 1, text: 2 });
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { selected: 0, icon: 1, text: 3 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -805,7 +792,7 @@ var app = (function () {
     			console_1.warn("<Sidebar_item> was created without expected prop 'icon'");
     		}
 
-    		if (/*text*/ ctx[2] === undefined && !("text" in props)) {
+    		if (/*text*/ ctx[3] === undefined && !("text" in props)) {
     			console_1.warn("<Sidebar_item> was created without expected prop 'text'");
     		}
     	}
@@ -842,25 +829,19 @@ var app = (function () {
 
     function create_fragment$2(ctx) {
     	let sidebar;
-    	let t0;
     	let div;
     	let updating_selected;
-    	let t1;
+    	let t0;
     	let updating_selected_1;
-    	let t2;
+    	let t1;
     	let updating_selected_2;
     	let current;
-
-    	const icon = new Icon({
-    			props: { src: "./res/icon.png" },
-    			$$inline: true
-    		});
 
     	function sidebaritem0_selected_binding(value) {
     		/*sidebaritem0_selected_binding*/ ctx[7].call(null, value);
     	}
 
-    	let sidebaritem0_props = { icon: "./res/home.svg", text: "Home" };
+    	let sidebaritem0_props = { icon: "./res/home.svg" };
 
     	if (/*homeSelected*/ ctx[0] !== void 0) {
     		sidebaritem0_props.selected = /*homeSelected*/ ctx[0];
@@ -877,7 +858,7 @@ var app = (function () {
     		/*sidebaritem1_selected_binding*/ ctx[8].call(null, value);
     	}
 
-    	let sidebaritem1_props = { icon: "./res/jumps.png", text: "Jumps" };
+    	let sidebaritem1_props = { icon: "./res/jumps.png" };
 
     	if (/*jumpsSelected*/ ctx[1] !== void 0) {
     		sidebaritem1_props.selected = /*jumpsSelected*/ ctx[1];
@@ -894,7 +875,7 @@ var app = (function () {
     		/*sidebaritem2_selected_binding*/ ctx[9].call(null, value);
     	}
 
-    	let sidebaritem2_props = { icon: "./res/import.png", text: "Import" };
+    	let sidebaritem2_props = { icon: "./res/import.png" };
 
     	if (/*importSelected*/ ctx[2] !== void 0) {
     		sidebaritem2_props.selected = /*importSelected*/ ctx[2];
@@ -910,17 +891,15 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			sidebar = element("sidebar");
-    			create_component(icon.$$.fragment);
-    			t0 = space();
     			div = element("div");
     			create_component(sidebaritem0.$$.fragment);
-    			t1 = space();
+    			t0 = space();
     			create_component(sidebaritem1.$$.fragment);
-    			t2 = space();
+    			t1 = space();
     			create_component(sidebaritem2.$$.fragment);
-    			attr_dev(div, "class", "items svelte-pyz5hc");
-    			add_location(div, file$2, 59, 4, 1202);
-    			attr_dev(sidebar, "class", "svelte-pyz5hc");
+    			attr_dev(div, "class", "items svelte-utstly");
+    			add_location(div, file$2, 59, 4, 1207);
+    			attr_dev(sidebar, "class", "svelte-utstly");
     			add_location(sidebar, file$2, 57, 0, 1150);
     		},
     		l: function claim(nodes) {
@@ -928,13 +907,11 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, sidebar, anchor);
-    			mount_component(icon, sidebar, null);
-    			append_dev(sidebar, t0);
     			append_dev(sidebar, div);
     			mount_component(sidebaritem0, div, null);
-    			append_dev(div, t1);
+    			append_dev(div, t0);
     			mount_component(sidebaritem1, div, null);
-    			append_dev(div, t2);
+    			append_dev(div, t1);
     			mount_component(sidebaritem2, div, null);
     			current = true;
     		},
@@ -969,14 +946,12 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(icon.$$.fragment, local);
     			transition_in(sidebaritem0.$$.fragment, local);
     			transition_in(sidebaritem1.$$.fragment, local);
     			transition_in(sidebaritem2.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(icon.$$.fragment, local);
     			transition_out(sidebaritem0.$$.fragment, local);
     			transition_out(sidebaritem1.$$.fragment, local);
     			transition_out(sidebaritem2.$$.fragment, local);
@@ -984,7 +959,6 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(sidebar);
-    			destroy_component(icon);
     			destroy_component(sidebaritem0);
     			destroy_component(sidebaritem1);
     			destroy_component(sidebaritem2);
@@ -31621,7 +31595,7 @@ var app = (function () {
     						positions: Cesium.Cartesian3.fromDegreesArrayHeights(datapoints),
     						width: 10,
     						arcType: Cesium.ArcType.NONE,
-    						material: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.PURPLE)
+    						material: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.YELLOW)
     					}
     				});
 
@@ -32563,7 +32537,7 @@ var app = (function () {
     			if (if_block1) if_block1.c();
     			t2 = space();
     			if (if_block2) if_block2.c();
-    			attr_dev(main, "class", "svelte-16v96kd");
+    			attr_dev(main, "class", "svelte-10yhose");
     			add_location(main, file$k, 9, 0, 254);
     		},
     		l: function claim(nodes) {
@@ -32685,7 +32659,7 @@ var app = (function () {
 
     function instance$l($$self, $$props, $$invalidate) {
     	let { name } = $$props;
-    	var page = 2;
+    	var page = 1;
     	const writable_props = ["name"];
 
     	Object.keys($$props).forEach(key => {

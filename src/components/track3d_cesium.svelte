@@ -39,7 +39,7 @@
                 width: 10,
                 arcType: Cesium.ArcType.NONE,
                 material: new Cesium.PolylineArrowMaterialProperty(
-                Cesium.Color.PURPLE
+                Cesium.Color.YELLOW
                 ),
             },
         });

@@ -56,28 +56,36 @@
 </script>
 
 <sidebar>
-	<Icon src="./res/icon.png"></Icon>
+	<!--Icon src="./res/icon.png"></Icon-->
     <div class="items">
-        <SidebarItem bind:selected={homeSelected} icon="./res/home.svg" text="Home"></SidebarItem>
-        <SidebarItem bind:selected={jumpsSelected} icon="./res/jumps.png" text="Jumps"></SidebarItem>
-        <SidebarItem bind:selected={importSelected} icon="./res/import.png" text="Import"></SidebarItem>
+        <SidebarItem bind:selected={homeSelected} icon="./res/home.svg"></SidebarItem>
+        <SidebarItem bind:selected={jumpsSelected} icon="./res/jumps.png"></SidebarItem>
+        <SidebarItem bind:selected={importSelected} icon="./res/import.png"></SidebarItem>
     </div>
 </sidebar>
 
 <style>
     sidebar {
-        height: 100%;
         display: flex;
         flex-direction: column;
-        border-right: 1px solid gray;
-        padding-right: 2vw;
+        justify-content: center;
+        width: 5vw;
+        margin-left: 0.5vw;
     }
 
     .items {
-        height: 100%;
+        height: 60%;
         width: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-between;
+        padding-right: 1vw;
+        padding-top: 3vw;
+        padding-bottom: 3vw;
+
+        border-right: 1px solid gray;
+        background: rgb(12, 11, 24);
+        color: white;
+        border-radius: 5vw;
     }
 </style>

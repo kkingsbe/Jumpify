@@ -8,6 +8,6 @@
 
 <style>
     img {
-        width: 10vw;
+        width: 4vw;
     }
 </style>

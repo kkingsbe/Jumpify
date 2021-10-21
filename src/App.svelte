@@ -4,7 +4,7 @@
 	import Home from "./components/home.svelte"
 	import Jumps from "./components/jumps.svelte"
 	import Import from "./components/import.svelte"
-	var page = 2;
+	var page = 1;
 </script>
 
 <main>
@@ -28,7 +28,7 @@
 		flex-direction: row;
 		height: 100%;
 		width: 100%;
-		background: linear-gradient(45deg, #8E2DE2, rgb(104, 0, 224));
+		background: linear-gradient(45deg, #02aab0, #00cdac);
 		overflow-y: hidden;
 		color: white;
 	}
