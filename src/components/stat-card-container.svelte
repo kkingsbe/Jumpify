@@ -4,12 +4,17 @@
 
     var statsDB = new Datastore("C:/Program Files/Jumpify/stats.db")
     var jumpsDB = new Datastore("C:/Program Files/Jumpify/jumps.db")
-    var stats = {}
+    var stats = {
+        jumpsLogged: 0,
+        maxSpeed: 0,
+        maxAlt: 0
+    }
 
     statsDB.loadDatabase(function(err) {
         if(err) alert(err)
         statsDB.find({}, function(err, docs) {
             stats = docs[0]
+            console.log(docs)
         })
         jumpsDB.loadDatabase(function(err) {
             if(err) alert(err)
@@ -41,8 +46,8 @@
         <Card statType="Jumps Logged Today" statValue={stats.jumpsToday}></Card>
     </div>
     <div class="row">
-        <Card statType="Maximum Speed"></Card>
-        <Card statType="Maximum Altitude"></Card>
+        <Card statType="Maximum Speed" statValue={stats.maxSpeed.toFixed(2)}mph></Card>
+        <Card statType="Maximum Altitude" statValue={stats.maxAlt.toFixed(2)}ft></Card>
         <Card statType="Average Deployment Altitude"></Card>
     </div>
 </container>

@@ -2,7 +2,7 @@
     export let selected;
     export let icon;
     export let text;
-    $: console.log(selected)
+    
     function select() {
         selected = true
     }

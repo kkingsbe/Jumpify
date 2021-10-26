@@ -96,14 +96,111 @@
     function generateStats() {
         statsDB.remove({ }, { multi: true }, function (err, numRemoved) {
             jumpsDB.find({}, function(err, docs) {
+                console.log(docs)
                 let jumpsLogged = docs.length
-                let stats = {jumpsLogged: jumpsLogged}
+                let maxSpeeds = []
+                let maxAlts = []
+                docs.forEach(jump => {
+                    maxSpeeds.push(jumpMaxSpeed(jump))
+                    maxAlts.push(jumpMaxAlt(jump))
+                })
+                let stats = {
+                    jumpsLogged: jumpsLogged,
+                    maxSpeed: Math.max(maxSpeeds),
+                    maxAlt: Math.max(maxAlts)
+                }
                 statsDB.insert(stats, function(err, newDow) {
                     if(err) alert(err)
                 })
             })
         });
     }
+
+    function jumpMaxSpeed(jump) {
+        let startSec
+        let datapoints = []
+        let vertS = []
+        let ls = []
+        let lastAlt = -999
+        let lastTime = -1
+        //console.log(jump)
+        jump.data.forEach(point => {
+            let h = point.timestamp.substring(0,2)
+            let min = point.timestamp.substring(2,4)
+            let sec = point.timestamp.substring(4)
+            let a = [h,min,sec]
+            let seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
+            let vs
+            let dz
+            let dt
+
+            if(typeof(startSec) == "undefined" && point.fixType == "fix") {
+                startSec = seconds
+                seconds = 0
+            } else {
+                seconds -= startSec
+            }
+            
+            if(lastAlt == -999) {
+                lastAlt = point.alt
+                dz = 0
+            } else {
+                dz = lastAlt - point.alt
+                lastAlt = point.alt
+            }
+
+            if(lastTime == -1) {
+                vs = 0
+                dt = 0
+                lastTime = seconds
+            } else {
+                dt = seconds - lastTime
+                lastTime = seconds
+                vs = dz/dt
+            }
+
+            if(point.fixType == "fix") {
+                ls.push(point.speedKnots/1.944) //knots to m/s
+                vertS.push(vs)
+                let v = Math.sqrt((point.speedKnots/1.944)**2 + (vs)**2) * 2.237
+                if(!isNaN(v)) {
+                    //console.log(isNaN(v))
+                    datapoints.push(v) //Norm and convert m/s to mph
+                }
+            }
+        })
+        return Math.max(...datapoints)
+    }
+
+    function jumpMaxAlt(jump) {
+        let startSec
+        let datapoints = []
+        jump.data.forEach(point => {
+            //console.log(point)
+            let h = point.timestamp.substring(0,2)
+            let min = point.timestamp.substring(2,4)
+            let sec = point.timestamp.substring(4)
+            let a = [h,min,sec]
+            let seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
+
+            if(typeof(startSec) == "undefined" && point.fixType == "fix") {
+                startSec = seconds
+                //console.log(startSec)
+                seconds = 0
+            } else {
+                //console.log(seconds)
+                seconds -= startSec
+            }
+
+            if(point.fixType == "fix") {
+                datapoints.push(point.alt * 3.28084) //Meters to ft
+            }
+        })
+
+        return Math.max(...datapoints)
+    }
+
+    generateStats()
 </script>
 
 <import>
