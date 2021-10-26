@@ -23,7 +23,7 @@
             let dz
             let dt
 
-            if(typeof(startSec) == "undefined") {
+            if(typeof(startSec) == "undefined" && point.fixType == "fix") {
                 startSec = seconds
                 seconds = 0
             } else {
@@ -48,8 +48,10 @@
                 vs = dz/dt
             }
             //console.log(dt)
-            labels.push(Math.round(seconds))
-            datapoints.push(vs * 2.237) //M/S to Mph
+            if(point.fixType == "fix") {
+                labels.push(Math.round(seconds))
+                datapoints.push(vs * 2.237) //M/S to Mph
+            }
         })
         //console.log(labels)
         //console.log(datapoints)

@@ -21,16 +21,17 @@
             let dz
             let dt
 
-            if(typeof(startSec) == "undefined") {
+            if(typeof(startSec) == "undefined" && point.fixType == "fix") {
                 startSec = seconds
                 seconds = 0
             } else {
                 seconds -= startSec
             }
             
-            
-            labels.push(Math.round(seconds))
-            datapoints.push(point.speedKnots*1.151) //Knots to mph
+            if(point.fixType == "fix") {
+                labels.push(Math.round(seconds))
+                datapoints.push(point.speedKnots*1.151) //Knots to mph
+            }
         })
         //console.log(labels)
         //console.log(datapoints)

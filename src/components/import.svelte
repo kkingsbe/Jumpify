@@ -109,7 +109,7 @@
 <import>
     <div class="card">
         <p class="title">Import Data:</p>
-        <input id="fileselector" type="file" bind:this={input} bind:files>
+        <input id="fileselector" type="file" multiple bind:this={input} bind:files>
         <div class="btn" on:click={importFiles}>
             <p>Import!</p>
         </div>

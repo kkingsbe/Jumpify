@@ -7,6 +7,7 @@
     var chartData
 
     $: if(jump && typeof(jump) !== "undefined") {
+        //console.log(jump)
         let decimalCoords = getDecimalCoords()
         let startCoords = decimalCoords[0]
         let startSec
@@ -22,15 +23,17 @@
             let a = [h,min,sec]
             let seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
 
-            if(typeof(startSec) == "undefined") {
+            if(typeof(startSec) == "undefined" && jump[i].fixType == "fix") {
                 startSec = seconds
                 seconds = 0
             } else {
                 seconds -= startSec
             }
 
-            labels.push(Math.round(seconds))
-            datapoints.push(displacement * 3.281) //Meters to ft
+            if(jump[i].fixType == "fix") {
+                labels.push(Math.round(seconds))
+                datapoints.push(displacement * 3.281) //Meters to ft
+            }
         }
         //console.log(labels)
         //console.log(datapoints)

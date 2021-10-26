@@ -27,7 +27,7 @@
             let dz
             let dt
 
-            if(typeof(startSec) == "undefined") {
+            if(typeof(startSec) == "undefined" && point.fixType == "fix") {
                 startSec = seconds
                 seconds = 0
             } else {
@@ -51,10 +51,13 @@
                 lastTime = seconds
                 vs = dz/dt
             }
-            labels.push(Math.round(seconds))
-            ls.push(point.speedKnots/1.944) //knots to m/s
-            vertS.push(vs)
-            datapoints.push(Math.sqrt((point.speedKnots/1.944)**2 + (vs)**2) * 2.237) //Norm and convert m/s to mph
+
+            if(point.fixType == "fix") {
+                labels.push(Math.round(seconds))
+                ls.push(point.speedKnots/1.944) //knots to m/s
+                vertS.push(vs)
+                datapoints.push(Math.sqrt((point.speedKnots/1.944)**2 + (vs)**2) * 2.237) //Norm and convert m/s to mph
+            }
         })
         //console.log(labels)
         //console.log(datapoints)

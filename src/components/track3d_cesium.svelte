@@ -9,6 +9,7 @@
     Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NTY2ODJlYi03Yjk4LTQyNzctYTViNC1hOGExNTVlYzAxZGMiLCJpZCI6NzA3NDcsImlhdCI6MTYzNDYxMTk1M30.2wm8m8_BLf6waLA_-AAgrG96edGS2YUvoS3qmFMXj90"
 
     var datapoints = []
+    var data = []
     $: if(typeof(jump) !== "undefined" && mounted) {
         if(typeof(viewer) !== "undefined") {
             viewer.entities.removeAll();
@@ -19,14 +20,22 @@
         let i = 0
         let largestVal = 0
         while(i < coords.length) {
-            let coord = coords[i]
-            datapoints.push(coord[0])
-            datapoints.push(coord[1])
-            datapoints.push(jump[i].alt)
+            if(jump[i].fixType == "fix") {
+                let coord = coords[i]
+                datapoints.push(coord[0])
+                datapoints.push(coord[1])
+                datapoints.push(jump[i].alt)
+                //console.log(jump[i].alt)
+                data.push({
+                    lat: coord[0],
+                    lon: coord[1],
+                    alt: jump[i].alt
+                })
+            }
             i++
         }
-
-        console.log(datapoints)
+        console.log(data)
+        //console.log(datapoints)
 	    window.CESIUM_BASE_URL = './build';
         mounted = true
         viewer = new Cesium.Viewer('cesiumContainer', {
@@ -55,6 +64,8 @@
     function getDecimalCoords() {
         let arr = []
         for(let i = 0; i < jump.length; i++) {
+            if(jump[i].fixType == "none") continue
+            
             let point = jump[i]
             let lat = point.lat
             let latPole = point.latPole

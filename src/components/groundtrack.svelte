@@ -48,6 +48,8 @@
     function getDecimalCoords() {
         let arr = []
         for(let i = 0; i < jump.length; i++) {
+            if(jump[i].fixType == "none") continue
+            
             let point = jump[i]
             let lat = point.lat
             let latPole = point.latPole

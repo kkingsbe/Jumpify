@@ -69,23 +69,24 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 5vw;
+        width: 3vw;
         margin-left: 0.5vw;
     }
 
     .items {
-        height: 60%;
+        height: 20vw;
+        max-height: 60%;
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding-right: 1vw;
+        padding-right: 0.75vw;
         padding-top: 3vw;
         padding-bottom: 3vw;
 
-        border-right: 1px solid gray;
         background: rgb(12, 11, 24);
         color: white;
         border-radius: 5vw;
+        box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.7);
     }
 </style>

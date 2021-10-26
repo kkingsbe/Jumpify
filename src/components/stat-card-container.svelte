@@ -51,9 +51,10 @@
     .row {
        display: flex;
        flex-direction: row;
-       justify-content: space-around;
-       margin-bottom: 5vw; 
+       justify-content: center;
+       margin-bottom: 2.5vw; 
     }
+
     container {
         display: grid;
     }

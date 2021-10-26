@@ -19,17 +19,22 @@
             let a = [h,min,sec]
             let seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
 
-            if(typeof(startSec) == "undefined") {
+            if(typeof(startSec) == "undefined" && point.fixType == "fix") {
                 startSec = seconds
+                //console.log(startSec)
                 seconds = 0
             } else {
+                //console.log(seconds)
                 seconds -= startSec
             }
 
-            labels.push(Math.round(seconds))
-            datapoints.push(point.alt * 3.28084) //Meters to ft
+            if(point.fixType == "fix") {
+                labels.push(Math.round(seconds))
+                datapoints.push(point.alt * 3.28084) //Meters to ft
+            }
         })
         //console.log(labels)
+        //console.log(datapoints)
         
         chartData = {
             labels: labels,

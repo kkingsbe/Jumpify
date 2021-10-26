@@ -43,6 +43,7 @@
         padding: 1vw;
         border: 3px solid rgb(80, 80, 80);
         box-shadow: 3px 3px 7px rgb(0 0 0 / 0.3);
+        margin-right: 2.5vw;
     }
 
     .text {

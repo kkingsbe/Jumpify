@@ -31,7 +31,7 @@
     }
 
     img {
-        height: 3vw;
+        width: 2vw;
     }
 
     p {
@@ -40,13 +40,13 @@
 
     .selected-div {
         height: 100%;
-        width: 0.5vw;
+        width: 0.25vw;
         background: white;
     }
 
     .unselected-div {
         height: 100%;
-        width: 0.5vw;
+        width: 0.25vw;
         background: none;
     }
 </style>
