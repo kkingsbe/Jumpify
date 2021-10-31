@@ -2,6 +2,7 @@
     import Line from "svelte-chartjs/src/Line.svelte"
     export let jump
 
+    var vs_threshold = 30 //mph, threshold for entering freefall
     var labels = []
     var datapoints = []
     var chartData
@@ -11,6 +12,10 @@
         let decimalCoords = getDecimalCoords()
         let startCoords = decimalCoords[0]
         let startSec
+        let lastAlt = -999
+        let lastTime = -1
+        let ff = false
+        let ffStart = 0
         labels = []
         datapoints = []
         for(let i = 0; i < decimalCoords.length; i++) {
@@ -22,6 +27,9 @@
             let sec = jump[i].timestamp.substring(4)
             let a = [h,min,sec]
             let seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
+            let vs
+            let dz
+            let dt
 
             if(typeof(startSec) == "undefined" && jump[i].fixType == "fix") {
                 startSec = seconds
@@ -30,8 +38,33 @@
                 seconds -= startSec
             }
 
-            if(jump[i].fixType == "fix") {
-                labels.push(Math.round(seconds))
+            if(lastAlt == -999) {
+                lastAlt = jump[i].alt
+                dz = 0
+            } else {
+                dz = lastAlt - jump[i].alt
+                lastAlt = jump[i].alt
+            }
+
+            if(lastTime == -1) {
+                vs = 0
+                dt = 0
+                lastTime = seconds
+            } else {
+                dt = seconds - lastTime
+                lastTime = seconds
+                vs = dz/dt
+            }
+
+            if(!isNaN(vs) && vs >= vs_threshold && vs < 100 && !ff) { //Check to see if the vertical speed is over the threshold, if the vertical speed is correct, and if we arent already in freefall
+                ff = true //Entered freefall if the vs is higher than the threshold
+                ffStart = seconds
+                //startSec = seconds
+                //seconds = 0
+            }
+
+            if(jump[i].fixType == "fix" && ff) {
+                labels.push(Math.round(seconds - ffStart))
                 datapoints.push(displacement * 3.281) //Meters to ft
             }
         }

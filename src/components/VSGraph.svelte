@@ -2,6 +2,7 @@
     import Line from "svelte-chartjs/src/Line.svelte"
     export let jump
 
+    var vs_threshold = 30 //mph, threshold for entering freefall
     var labels = []
     var datapoints = []
     var chartData
@@ -13,6 +14,8 @@
         datapoints = []
         let lastAlt = -999
         let lastTime = -1
+        let ff = false
+        let ffStart = 0
         jump.forEach(point => {
             let h = point.timestamp.substring(0,2)
             let min = point.timestamp.substring(2,4)
@@ -48,8 +51,15 @@
                 vs = dz/dt
             }
             //console.log(dt)
-            if(point.fixType == "fix") {
-                labels.push(Math.round(seconds))
+            if(vs >= vs_threshold && vs < 100 && !ff) { //Check to see if the vertical speed is over the threshold, if the vertical speed is correct, and if we arent already in freefall
+                ff = true //Entered freefall if the vs is higher than the threshold
+                ffStart = seconds
+                //startSec = seconds
+                //console.log(seconds)
+                //seconds = 0
+            }
+            if(point.fixType == "fix" && ff) {
+                labels.push(Math.round(seconds - ffStart))
                 datapoints.push(vs * 2.237) //M/S to Mph
             }
         })

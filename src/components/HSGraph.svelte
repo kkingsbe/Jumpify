@@ -5,10 +5,17 @@
     var labels = []
     var datapoints = []
     var chartData
-
+    var vs_threshold = 30 //mph, threshold for entering freefall
+    
     $: if(jump && typeof(jump) !== "undefined") {
         //console.log(jump)
         let startSec
+        let ff = false
+        let ffStart = 0
+        let lastAlt = -999
+        let lastTime = -1
+        labels = []
+        datapoints = []
         labels = []
         datapoints = []
         jump.forEach(point => {
@@ -27,9 +34,35 @@
             } else {
                 seconds -= startSec
             }
+
+            if(lastAlt == -999) {
+                lastAlt = point.alt
+                dz = 0
+            } else {
+                dz = lastAlt - point.alt
+                lastAlt = point.alt
+            }
+
+            if(lastTime == -1) {
+                vs = 0
+                dt = 0
+                lastTime = seconds
+            } else {
+                dt = seconds - lastTime
+                lastTime = seconds
+                vs = dz/dt
+            }
+
+            if(!isNaN(vs) && vs >= vs_threshold && vs < 100 && !ff) { //Check to see if the vertical speed is over the threshold, if the vertical speed is correct, and if we arent already in freefall
+                ff = true //Entered freefall if the vs is higher than the threshold
+                ffStart = seconds
+                console.log(ffStart)
+                //startSec = seconds
+                //seconds = 0
+            }
             
-            if(point.fixType == "fix") {
-                labels.push(Math.round(seconds))
+            if(point.fixType == "fix" && ff) {
+                labels.push(Math.round(seconds - ffStart))
                 datapoints.push(point.speedKnots*1.151) //Knots to mph
             }
         })
