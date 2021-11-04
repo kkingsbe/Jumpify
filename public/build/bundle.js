@@ -32292,20 +32292,20 @@ var app = (function () {
     			p1 = element("p");
     			p1.textContent = "Import!";
     			attr_dev(p0, "class", "title svelte-csggiu");
-    			add_location(p0, file$j, 209, 8, 7204);
+    			add_location(p0, file$j, 219, 8, 7579);
     			attr_dev(input_1, "id", "fileselector");
     			attr_dev(input_1, "type", "file");
     			input_1.multiple = true;
     			attr_dev(input_1, "class", "svelte-csggiu");
-    			add_location(input_1, file$j, 210, 8, 7247);
+    			add_location(input_1, file$j, 220, 8, 7622);
     			attr_dev(p1, "class", "svelte-csggiu");
-    			add_location(p1, file$j, 212, 12, 7386);
+    			add_location(p1, file$j, 222, 12, 7761);
     			attr_dev(div0, "class", "btn svelte-csggiu");
-    			add_location(div0, file$j, 211, 8, 7332);
+    			add_location(div0, file$j, 221, 8, 7707);
     			attr_dev(div1, "class", "card svelte-csggiu");
-    			add_location(div1, file$j, 208, 4, 7176);
+    			add_location(div1, file$j, 218, 4, 7551);
     			attr_dev(import_1, "class", "svelte-csggiu");
-    			add_location(import_1, file$j, 207, 0, 7162);
+    			add_location(import_1, file$j, 217, 0, 7537);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -32353,6 +32353,8 @@ var app = (function () {
     	let ls = [];
     	let lastAlt = -999;
     	let lastTime = -1;
+    	var vs_threshold = 30; //mph, threshold for entering freefall
+    	let ff = false;
 
     	//console.log(jump)
     	jump.data.forEach(point => {
@@ -32390,7 +32392,12 @@ var app = (function () {
     			vs = dz / dt;
     		}
 
-    		if (point.fixType == "fix") {
+    		//console.log(point.alt)
+    		if (vs > vs_threshold && vs < 100) {
+    			ff = true;
+    		}
+
+    		if (point.fixType == "fix" && ff) {
     			ls.push(point.speedKnots / 1.944); //knots to m/s
     			let v = Math.sqrt((point.speedKnots / 1.944) ** 2 + vs ** 2) * 2.237;
 
@@ -32401,6 +32408,9 @@ var app = (function () {
     		}
     	});
 
+    	console.log("--------------------------------------------");
+    	console.log(jump);
+    	console.log(Math.max(...datapoints));
     	return Math.max(...datapoints);
     }
 
@@ -32540,8 +32550,9 @@ var app = (function () {
     	function generateStats() {
     		statsDB.remove({}, { multi: true }, function (err, numRemoved) {
     			jumpsDB.find({}, function (err, docs) {
-    				console.log(docs);
+    				//console.log(docs)
     				let jumpsLogged = docs.length;
+
     				let maxSpeeds = [];
     				let maxAlts = [];
 

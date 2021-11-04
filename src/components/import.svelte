@@ -96,7 +96,7 @@
     function generateStats() {
         statsDB.remove({ }, { multi: true }, function (err, numRemoved) {
             jumpsDB.find({}, function(err, docs) {
-                console.log(docs)
+                //console.log(docs)
                 let jumpsLogged = docs.length
                 let maxSpeeds = []
                 let maxAlts = []
@@ -124,6 +124,8 @@
         let ls = []
         let lastAlt = -999
         let lastTime = -1
+        var vs_threshold = 30 //mph, threshold for entering freefall
+        let ff = false
         //console.log(jump)
         jump.data.forEach(point => {
             let h = point.timestamp.substring(0,2)
@@ -160,7 +162,13 @@
                 vs = dz/dt
             }
 
-            if(point.fixType == "fix") {
+            //console.log(point.alt)
+
+            if(vs > vs_threshold && vs < 100) {
+                ff = true
+            }
+
+            if(point.fixType == "fix" && ff) {
                 ls.push(point.speedKnots/1.944) //knots to m/s
                 vertS.push(vs)
                 let v = Math.sqrt((point.speedKnots/1.944)**2 + (vs)**2) * 2.237
@@ -170,7 +178,9 @@
                 }
             }
         })
-
+        console.log("--------------------------------------------")
+        console.log(jump)
+        console.log(Math.max(...datapoints))
         return Math.max(...datapoints)
     }
 
