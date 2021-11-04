@@ -12,7 +12,7 @@
     <Altgraph bind:jump={jump}></Altgraph>
     <VSGraph bind:jump={jump}></VSGraph>
     <HSGraph bind:jump={jump}></HSGraph>
-    <DisplacementGraph bind:jump={jump}></DisplacementGraph>
+    <!--DisplacementGraph bind:jump={jump}></DisplacementGraph-->
 </graphs>
 
 <style>

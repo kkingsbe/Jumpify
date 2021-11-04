@@ -63,7 +63,7 @@
                 //seconds = 0
             }
 
-            if(jump[i].fixType == "fix" && ff) {
+            if(jump[i].fixType == "fix") {
                 labels.push(Math.round(seconds - ffStart))
                 datapoints.push(displacement * 3.281) //Meters to ft
             }

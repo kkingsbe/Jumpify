@@ -106,9 +106,10 @@
                 })
                 let stats = {
                     jumpsLogged: jumpsLogged,
-                    maxSpeed: Math.max(maxSpeeds),
-                    maxAlt: Math.max(maxAlts)
+                    maxSpeed: Math.max(...maxSpeeds),
+                    maxAlt: Math.max(...maxAlts)
                 }
+                
                 statsDB.insert(stats, function(err, newDow) {
                     if(err) alert(err)
                 })
@@ -169,6 +170,7 @@
                 }
             }
         })
+
         return Math.max(...datapoints)
     }
 

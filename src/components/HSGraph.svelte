@@ -56,7 +56,7 @@
             if(!isNaN(vs) && vs >= vs_threshold && vs < 100 && !ff) { //Check to see if the vertical speed is over the threshold, if the vertical speed is correct, and if we arent already in freefall
                 ff = true //Entered freefall if the vs is higher than the threshold
                 ffStart = seconds
-                console.log(ffStart)
+                //console.log(ffStart)
                 //startSec = seconds
                 //seconds = 0
             }
